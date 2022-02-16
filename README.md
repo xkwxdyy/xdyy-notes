@@ -2,8 +2,6 @@
 
 用于个人写读书笔记
 
-## 仓库主要内容
-
 ## 参与贡献
 
 ### 仓库地址
@@ -18,3 +16,5 @@ issues: https://github.com/xkwxdyy/xdyy-notes/issues
 #### Gitee
 issues: https://gitee.com/xkwxdyy/xdyy-notes/issues
 
+## 感谢
+基础设置主要参考了`zepinglee`的[`exam-zh`](https://gitee.com/zepinglee/exam-zh)项目，特此感谢！
