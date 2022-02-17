@@ -40,7 +40,7 @@
 % 加载文档类和宏包
 
 % 处理文档类选项
-\PassOptionsToClass { UTF8 , a4paper , scheme = chinese } { ctexbook }
+\PassOptionsToClass { UTF8 , a4paper , scheme = chinese , oneside } { ctexbook }
 \DeclareOption* { \PassOptionsToClass { \CurrentOption } { ctexbook } }
 \ProcessOptions*
 
@@ -82,6 +82,8 @@
 \RequirePackage { amsmath }
 \RequirePackage { enumitem }
 \RequirePackage { xcolor }
+\RequirePackage { needspace }
+\RequirePackage { varwidth }
 
 % 由于 mathtools 需要在 unicode-math 前载入，所以推迟载入 unicode-math
 \AtBeginOfPackageFile* { siunitx }
@@ -146,17 +148,16 @@
   }
 
 
-
 % 设置hyperref
 \clist_new:N \g__xdyynotes_to_hyperref_clist
 
 \NewDocumentCommand \hypersetup { m }
-  { \fdu_hyperref_setup:n {#1} }
-\cs_new_protected:Npn \fdu_hyperref_setup:n #1
+  { \xdyynotes_hyperref_setup:n {#1} }
+\cs_new_protected:Npn \xdyynotes_hyperref_setup:n #1
   { \clist_gput_right:Nn \g__xdyynotes_to_hyperref_clist {#1} }
 \cs_new_protected:Npn \__xdyynotes_define_hyperlink_color:nnn #1#2#3
   {
-    \definecolorset { HTML } { fdu@ } { }
+    \definecolorset { HTML } { xdyynotes@ } { }
       { link, #1; url, #2; cite, #3 }
   }
 \cs_new:Npn \__xdyynotes_set_hyperlink_color_key:n #1
@@ -165,11 +166,11 @@
       { \clist_item:nn {#1} {2} }
       { \clist_item:nn {#1} {3} }
       { \clist_item:nn {#1} {4} }
-    \fdu_hyperref_setup:n
+    \xdyynotes_hyperref_setup:n
       {
-        linkcolor = fdu@link, linkbordercolor = fdu@link,
-        urlcolor  = fdu@url,  urlbordercolor  = fdu@url,
-        citecolor = fdu@cite, citebordercolor = fdu@cite
+        linkcolor = xdyynotes@link, linkbordercolor = xdyynotes@link,
+        urlcolor  = xdyynotes@url,  urlbordercolor  = xdyynotes@url,
+        citecolor = xdyynotes@cite, citebordercolor = xdyynotes@cite
       }
   }
 
@@ -250,8 +251,86 @@
 \geometry
   {
     paper  = a4paper,
-    margin = 1in,
+    margin = 1.1in,
+    headheight = 13pt,
   }
+
+\cs_generate_variant:Nn \int_to_arabic:n { v }
+\cs_new:Npn \__xdyynotes_arabic:n #1
+  { \int_to_arabic:v { c@ #1 } }
+
+
+% ctex设置
+\cs_new:Npn \__xdyynotes_chapternamebox:n #1
+  {
+    \begin{varwidth}{\hsize}
+      \linespread{1}\selectfont
+      \centering 
+      #1
+    \end{varwidth}
+  }
+
+\ctexset{
+  contentsname = {Contents},
+  chapter =
+    {
+      format      = \huge \normalfont \sffamily \raggedright ,
+      name        = {Chapter \c_space_tl },
+      nameformat  =
+        {
+          \rule{\linewidth}{1bp}
+          \par\bigskip\hfill
+          \__xdyynotes_chapternamebox:n
+        },
+      aftername   = \par,
+      aftertitle  = 
+        {
+          \par\bigskip
+          \nointerlineskip
+          \rule{\linewidth}{2bp}
+          \par
+        },
+      beforeskip  = 0 pt,
+      afterskip   = 40 pt,
+      number      = \__xdyynotes_arabic:n { chapter },
+      fixskip     = true
+    },
+  section =
+    {
+      % name        = {\S},
+      format     += \raggedright,
+      break       = \Needspace{ .5\textwidth }
+    },
+  subsection =
+    {
+      % name        = {\S},
+    },
+  subsubsection =
+    {
+      % name        = {\S},
+    },
+  chapter / tocline =
+    {
+      \normalfont \sffamily
+      \CTEXnumberline {#1} #2
+    },
+  section / tocline =
+    {
+      \CTEXnumberline {#1} #2
+    },
+  subsection / tocline =
+    {
+      \CJKfamily { zhkai }
+      \CTEXnumberline {#1} #2
+    }
+}
+
+% 去掉目录的页码
+\patchcmd
+  { \tableofcontents }
+  { \@starttoc{toc} }
+  { \thispagestyle{empty} \@starttoc{toc} }
+  {}{}
 
 
 % 字体
@@ -386,25 +465,71 @@
   }
 
 
-
 % 页眉和页脚
 
-% \tl_set:Nn \headrulewidth { 0pt }
+\tl_set:Nn \headrulewidth { 0.4pt }
 % \cs_set_eq:NN \@mkboth \use_none:n
 % \cs_set_eq:NN \sectionmark \use_none:n
 % \cs_set_eq:NN \subsectionmark \use_none:n
 
-% \pagestyle { fancy }
-% \fancypagestyle { plain }
-%   {
-%     \fancyhf { }
-%     \fancyfoot [ C ]
-%       {
-%         \small
-%         数学试题第 \thepage { } 页（共 \pageref { LastPage } ~ 页）
-%       }
-%   }
-% \pagestyle { plain }
+\pagestyle { fancy }
+\fancypagestyle { normalplain }
+  {
+    \fancyhf { }
+    \fancyhead [ L ] 
+      {
+        \kaishu
+        \leftmark
+      }
+    \fancyhead [ R ] 
+      {
+        \kaishu
+        \rightmark
+      }
+    \fancyhead [ C ]
+      {
+        \kaishu \bfseries
+        \tl_use:N \l__xdyynotes_info_title_tl
+      }
+    \fancyfoot [ C ]
+      {
+        \small
+        Page~\thepage / \pageref { LastPage }
+      }
+  }
+\pagestyle { normalplain }
+
+
+% 重新修改chapter的plain
+\fancypagestyle { plain }
+  {
+    \tl_set:Nn \headrulewidth { 0pt }
+    \fancyhf {} 
+    \fancyfoot [ C ]
+      {
+        \small
+        Page~\thepage / \pageref { LastPage }
+      }
+  }
+
+
+% 重设\frontmatter和\mainmatter，去掉frontmatter的页脚
+\cs_set_eq:NN \__xdyynotes_frontmatter: \frontmatter
+\cs_set_eq:NN \__xdyynotes_mainmatter: \mainmatter
+\cs_set:Npn \frontmatter
+  {
+    \group_begin:
+      \tl_set:Nn \headrulewidth { 0pt }
+      \fancypagestyle { plain }
+        { \fancyhf {} }
+      \pagestyle { plain }
+      \__xdyynotes_frontmatter:
+  }
+\cs_set:Npn \mainmatter
+  {
+    \group_end:
+    \__xdyynotes_mainmatter:
+  }
 
 
 % 设置 enumitem 列表格式
@@ -415,7 +540,6 @@
   labelsep   = 0pt,
   label = { （ \arabic * ） }
 }
-
 
 
 % 正体的 e 和 i
@@ -432,6 +556,20 @@
   }
 
 
+% 前言
+\NewDocumentEnvironment { preface } { O{} +b }
+  {
+    \chapter*{Preface}
+    #2
+  }
+  {
+    \vfil
+    \signature[#1] 
+    \vfil
+  }
+
+
+% 前言的签名落款
 \tl_new:N \l__xdyynotes_signature_name_tl
 \tl_new:N \l__xdyynotes_signature_place_tl
 \tl_new:N \l__xdyynotes_signature_date_tl
@@ -445,7 +583,8 @@
     date .tl_set:N = \l__xdyynotes_signature_date_tl,
     date .initial:n = {\today}
   }
-% 摘要签名
+
+% \signature 签名落款命令
 % 姓名、地点、时间
 % 夏康玮于珞珈山
 % 2022年2月17日
@@ -464,18 +603,3 @@
     \group_end:
   }
 
-% % 修改标题的格式
-% \cs_set:Npn \@maketitle
-%   {
-%     \newpage
-%     \null
-%     \vskip 2em
-%     \begin { center }
-%       \let \footnote \thanks
-%       { \Large \@title \par }
-%       \vskip 1.5em
-%       { \sffamily \bfseries \huge  读书笔记}
-%     \end { center }
-%     \par
-%     \vskip 1.5em
-%   }

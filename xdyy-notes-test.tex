@@ -1,34 +1,61 @@
 \documentclass{xdyy-notes}
-% 信息info
+
 \xdyynotesetup{
+  % 笔记信息
   info = {
     author = {夏康玮},
     title = {算子理论读书笔记},
-    date = {2022年2月17日},  % 默认为\today
+    date = {2022年2月17日}
   },
+  % 前言的落款签名
   signature = {
-    name = {夏康玮},       % 默认和\l__xdyynotes_author_name_tl相同
-    place = {珞珈山},        % 默认为珞珈山
-    date = {2022年2月17日}   % 默认和info/date相同
-  },
-  hyperref = {
-    hyperlink-color = {prl}
+    name = {夏康玮},
+    place = {珞珈山},
+    date = {2022年2月17日}
   }
 }
 
+
+\usepackage{zhlipsum}
+
+
 \begin{document}
+% 标题页
 \maketitle
+
+% 前言、目录部分
+\frontmatter
+
+\begin{preface}
+  \zhlipsum[1-3]
+\end{preface}
+
+
 \tableofcontents
 
+% 正文部分
+\mainmatter
 
-\chapter{1}
-是的
-\signature
+\chapter{第一章}
 
-\signature[date = {2022年2月18日}]
-\section{1}
+\section{第一节}
 
-\chapter{2}
 
-\section{2}
+\zhlipsum[1-6]
+
+
+
+\section{第二节}
+
+
+\subsection{11}
+
+
+\zhlipsum[1-2]
+
+
+
+\chapter{第一章}
+
+\section{第一节}
 \end{document}

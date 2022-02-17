@@ -4,6 +4,8 @@
 
 ### Added
 - 借鉴`fduthesis`对`hyperref`的`color`处理，加以修改
+- 修改`chapter`格式
+- 修改页眉页脚
 
 ## 仓库地址
 
