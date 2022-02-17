@@ -33,7 +33,8 @@
   { 
     info .meta:nn = { xdyy-notes / info } {#1},
     signature .meta:nn = { xdyy-notes / signature } {#1},
-    hyperref .meta:nn = { xdyy-notes / hyperref }{#1}
+    hyperref .meta:nn = { xdyy-notes / hyperref }{#1},
+    style .meta:nn = { xdyy-notes / style }{#1},
   }
 
 
@@ -84,6 +85,29 @@
 \RequirePackage { xcolor }
 \RequirePackage { needspace }
 \RequirePackage { varwidth }
+\RequirePackage { biblatex }
+
+% 处理参考文献
+\PassOptionsToPackage 
+  {
+    backend = biber, 
+    natbib,
+    style = gb7714-2015
+  }
+  { biblatex }
+
+\tl_new:N \l__xdyynotes_bib_resource_tl
+
+\keys_define:nn { xdyy-notes / style }
+  {
+    bib-resource .tl_set:N = \l__xdyynotes_bib_resource_tl,
+    % bib-resource .initial:n = {xdyy-notes-template.bib}
+  }
+
+\AtEndPreamble
+  {
+    \exp_args:NV \addbibresource \l__xdyynotes_bib_resource_tl
+  }
 
 % 由于 mathtools 需要在 unicode-math 前载入，所以推迟载入 unicode-math
 \AtBeginOfPackageFile* { siunitx }
@@ -602,4 +626,5 @@
       \end{flushright}
     \group_end:
   }
+
 

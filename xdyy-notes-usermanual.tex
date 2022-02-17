@@ -35,13 +35,52 @@
 
 
 \subsection{命令}
+
+\begin{function}[added = 2022-02-17]{\xdyynotesetup}
+  \begin{syntax}
+    |\xdyynotesetup| \marg{\kvopt{key}{val}}
+  \end{syntax}
+  全局设置，下面通过示例介绍键值：
+  \begin{latexcode}
+    \xdyynotesetup{
+      % 笔记信息
+      info = {
+        author = {夏康玮},
+        title = {算子理论读书笔记},
+        date = {2022年2月17日}
+      },
+      % 前言的落款签名
+      signature = {
+        name = {夏康玮},
+        place = {珞珈山},
+        date = {2022年2月17日}
+      },
+      style = {
+        % bib文件名
+        bib-resource = {xdyy-notes-template.bib}
+      }
+    }
+  \end{latexcode}
+\end{function}
+
+
 \begin{function}[added = 2022-02-17]{\signature}
   \begin{syntax}
     |\signature| \oarg{name = ..., place = ..., date = ...}
   \end{syntax}
-  用于摘要的落款签名
+  用于摘要的落款签名，可选参数用于修改姓名，地点和日期
 \end{function}
+
+
 
 \subsection{环境}
 
+\begin{function}[added = 2022-02-17]{preface}
+  \begin{syntax}
+    |\begin{preface}[name = ..., place = ..., date = ...]|
+      |  ...|
+    |\end{preface}|
+  \end{syntax}
+  前言环境，可选参数继承于 \tn{signature} 的参数，设置落款的姓名，地点和日期
+\end{function}
 \end{document}

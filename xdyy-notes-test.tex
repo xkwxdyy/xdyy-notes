@@ -12,6 +12,10 @@
     name = {夏康玮},
     place = {珞珈山},
     date = {2022年2月17日}
+  },
+  style = {
+    % bib文件名
+    bib-resource = {xdyy-notes-template.bib}
   }
 }
 
@@ -26,11 +30,12 @@
 % 前言、目录部分
 \frontmatter
 
+% 前言
 \begin{preface}
   \zhlipsum[1-3]
 \end{preface}
 
-
+% 目录
 \tableofcontents
 
 % 正文部分
@@ -58,4 +63,12 @@
 \chapter{第一章}
 
 \section{第一节}
+\cite{DiophantineQueffelec}
+
+
+% 后文部分：参考文献、附录等
+\backmatter
+\printbibliography
+
+
 \end{document}

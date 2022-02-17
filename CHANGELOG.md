@@ -4,6 +4,9 @@
 
 ### Added
 - 借鉴`fduthesis`对`hyperref`的`color`处理，加以修改
+- 增加参考文献
+
+### Changed
 - 修改`chapter`格式
 - 修改页眉页脚
 
