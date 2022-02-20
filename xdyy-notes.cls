@@ -37,6 +37,8 @@
     style .meta:nn = { xdyy-notes / style }{#1},
     quotation .meta:nn = { xdyy-notes / quotation }{#1},
     detail .meta:nn = { xdyy-notes / detail }{#1},
+    exercise .meta:nn = { xdyy-notes / exercise }{#1},
+    correction .meta:nn = { xdyy-notes / correction }{#1},
   }
 
 
@@ -84,7 +86,7 @@
 \RequirePackage { lastpage }
 \RequirePackage { amsmath }
 \RequirePackage { enumitem }
-\RequirePackage { xcolor }
+\RequirePackage [dvipsnames, svgnames]{ xcolor }
 \RequirePackage { needspace }
 \RequirePackage { varwidth }
 \RequirePackage { biblatex }
@@ -988,8 +990,8 @@
           }
       }
   }
-% 勘误后的内容
-\cs_new:Npn \__xdyynotes_detail_edited_output_set:n #1
+% 补充细节
+\cs_new:Npn \__xdyynotes_detail_add_output_set:n #1
   {
     \textbf{ 细节补充：}
     #1
@@ -1000,7 +1002,7 @@
       { 
         enhanced,
         breakable,
-        % parbox = false,   % 增加的话，内层的tcolorbox会和上方粘连
+        parbox = false,   % 增加的话，内层的tcolorbox会和上方粘连
         left = 2mm,
         right = 3mm,
         middle = 3mm,
@@ -1008,8 +1010,7 @@
         segmentation~style = 
           { dash~dot, black, line~width = 0.3pt }, 
         colback = white,
-        colframe = gray,
-        valign~lower = bottom
+        colframe = teal,
       }
   }
 
@@ -1037,7 +1038,7 @@
         ]
         \l__xdyynotes_detail_original_output_tl
         \tcblower
-        \__xdyynotes_detail_edited_output_set:n {#2}
+        \__xdyynotes_detail_add_output_set:n {#2}
       \end{tcolorbox}
     \group_end:
   }
@@ -1098,4 +1099,241 @@
       #2
     \endlist
     \addvspace { \l__xdyynotes_exercise_bottom_sep_skip }
+  }
+
+% \pretocmd
+
+% 勘误环境 correction
+
+% 声明变量
+\cs_new:Npn \__xdyynotes_correction_define_input_tl:n #1
+  {
+    \tl_new:c { l__xdyynotes_correction_ #1 _input_tl }
+  }
+
+\cs_new:Npn \__xdyynotes_correction_define_output_tl:n #1
+  {
+    \tl_new:c { l__xdyynotes_correction_ #1 _output_tl }
+  }
+
+\clist_map_function:nN
+  {
+    book, paper, edition, author, 
+    page, original, title, year,
+    revision, explanation
+  }
+  \__xdyynotes_correction_define_input_tl:n
+
+\clist_map_function:nN
+  {
+    book, paper, edition, author, 
+    page, original, title, year,
+    revision, explanation
+  }
+  \__xdyynotes_correction_define_output_tl:n
+
+\keys_define:nn { xdyy-notes / correction }
+  {
+    book .tl_set:N = \l__xdyynotes_correction_book_input_tl,
+    paper .tl_set:N = \l__xdyynotes_correction_paper_input_tl,
+    edition .tl_set:N = \l__xdyynotes_correction_edition_input_tl,
+    author .tl_set:N = \l__xdyynotes_correction_author_input_tl,
+    page .tl_set:N = \l__xdyynotes_correction_page_input_tl,
+    original .tl_set:N = \l__xdyynotes_correction_original_input_tl,
+    title .tl_set:N = \l__xdyynotes_correction_title_input_tl,
+    year .tl_set:N = \l__xdyynotes_correction_year_input_tl,
+    revision .tl_set:N = \l__xdyynotes_correction_revision_input_tl,
+    explanation .tl_set:N = \l__xdyynotes_correction_explanation_input_tl,
+  }
+
+
+\cs_new:Nn \__xdyynotes_correction_original_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_correction_original_output_tl
+      {
+        \textbf { 勘误前：}
+        \l__xdyynotes_correction_original_input_tl
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_revision_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_correction_revision_output_tl
+      {
+        \textbf { 勘误后：}
+        \l__xdyynotes_correction_revision_input_tl
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_author_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_correction_author_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_correction_author_output_tl
+          {
+            \group_begin:
+              \itshape \l__xdyynotes_correction_author_input_tl
+            \group_end:
+            .~
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_page_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_correction_page_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_correction_page_output_tl
+          {
+            \quad
+            Page:~ \l__xdyynotes_correction_page_input_tl
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_edition_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_correction_edition_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_correction_edition_output_tl
+          {
+            , ~
+            % \group_begin:
+              \l__xdyynotes_correction_edition_input_tl
+            % \group_end:
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_book_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_correction_book_output_tl
+      {
+        \group_begin:
+          \itshape 
+          \l__xdyynotes_correction_book_input_tl
+          \l__xdyynotes_correction_edition_output_tl
+        \group_end:
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_paper_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_correction_paper_output_tl
+      {
+        \group_begin:
+          \normalfont
+          \l__xdyynotes_correction_paper_input_tl
+          \l__xdyynotes_correction_edition_output_tl
+        \group_end:
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_title_output_set:
+  {
+    \__xdyynotes_correction_book_output_set:
+    \__xdyynotes_correction_paper_output_set:
+    \tl_if_blank:VTF \l__xdyynotes_correction_title_input_tl
+      {
+        \tl_if_blank:VTF \l__xdyynotes_correction_book_input_tl
+          {
+            % 如果book值是空的，就设置title为paper系列
+            \tl_set:Nn \l__xdyynotes_correction_title_output_tl
+              {
+                \l__xdyynotes_correction_author_output_tl
+                \l__xdyynotes_correction_paper_output_tl
+                \l__xdyynotes_correction_year_output_tl
+                \l__xdyynotes_correction_page_output_tl
+              }
+          }
+          {
+            % 如果book值不是空的，就设置title为book系列
+            \tl_set:Nn \l__xdyynotes_correction_title_output_tl
+              {
+                \l__xdyynotes_correction_author_output_tl
+                \l__xdyynotes_correction_book_output_tl
+                \l__xdyynotes_correction_year_output_tl
+                \l__xdyynotes_correction_page_output_tl
+              }
+          }
+      }
+      {
+        \tl_set:Nn \l__xdyynotes_correction_title_output_tl
+          {
+            \group_begin:
+              \itshape
+              \l__xdyynotes_correction_title_input_tl
+            \group_end:
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_year_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_correction_year_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_correction_year_output_tl
+          {
+            , ~
+            \group_begin:
+              \normalfont \l__xdyynotes_correction_year_input_tl.
+            \group_end:
+          }
+      }
+  }
+% 勘误解释
+\cs_new:Nn \__xdyynotes_correction_explanation_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_correction_explanation_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_correction_explanation_output_tl
+          {
+            \tcblower
+            \textbf{ 补充解释：}
+            \l__xdyynotes_correction_explanation_input_tl
+          }
+      }
+  }
+\tcbset
+  {
+    correction / .style =
+      { 
+        enhanced,
+        breakable,
+        % parbox = false,   % 增加的话，内层的tcolorbox会和上方粘连
+        left = 2mm,
+        right = 3mm,
+        middle = 3mm,
+        bottom = 1mm,
+        segmentation~style = 
+          { dash~dot, black, line~width = 0.3pt }, 
+        colback = white,
+        colframe = PaleVioletRed,
+      }
+  }
+
+\NewDocumentCommand { \correction } { O{} }
+  {
+    \group_begin:
+      \keys_set:nn { xdyy-notes / correction } {#1}
+      % 处理author
+      \__xdyynotes_correction_author_output_set:
+      % 处理year
+      \__xdyynotes_correction_year_output_set:
+      % 处理page
+      \__xdyynotes_correction_page_output_set:
+      % 处理original
+      \__xdyynotes_correction_original_output_set:
+      % 处理revision
+      \__xdyynotes_correction_revision_output_set:
+      % 处理edition
+      \__xdyynotes_correction_edition_output_set:
+      % 处理标题
+      \__xdyynotes_correction_title_output_set:
+      % 输出
+      \begin{tcolorbox}
+        [
+          correction,
+          title = { \l__xdyynotes_correction_title_output_tl }
+        ]
+        \l__xdyynotes_correction_original_output_tl
+        \par
+        \l__xdyynotes_correction_revision_output_tl
+        % 设置explanation部分
+        \__xdyynotes_correction_explanation_output_set:
+        \l__xdyynotes_correction_explanation_output_tl
+      \end{tcolorbox}
+    \group_end:
   }

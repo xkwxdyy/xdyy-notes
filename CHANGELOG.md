@@ -3,6 +3,7 @@
 ### Added
 - 完成`quotation`环境的重写
 - 完成`detail`与`exercise`环境的编写
+- 基本完成`correction`命令的编写
 
 ## [v0.0.1] - 2022-2-17
 
