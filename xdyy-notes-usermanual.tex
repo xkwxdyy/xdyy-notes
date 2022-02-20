@@ -13,29 +13,11 @@
 }
 
 \usepackage{xchoices}
-
+\usepackage{extarrows}
 
 \begin{document}
 \maketitle
 \tableofcontents
-
-
-
-\section{计划}
-
-本节主要列举想要编写的新功能。
-
-\begin{enumerate}
-  \item 勘误
-    教材难免会有一些勘误的地方，可以汇总起来方便查找和分享。需要涉及到的参数：
-      \begin{enumerate}
-        \item 勘误的是什么书还是文献
-        \item 勘误的版本？或者出版时间之类的补充细节
-        \item 勘误的原文
-        \item 勘误后的修改文
-        \item 为什么是需要勘误的以及自己的理解
-      \end{enumerate}
-\end{enumerate}
 
 
 \section{文类简介}
@@ -90,12 +72,23 @@
   用于摘要的落款签名，可选参数用于修改姓名，地点和日期。注意，此命令已嵌入 \env{preface} 环境中，只需要通过 \env{preface} 环境的可选参数进行修改即可。
 \end{function}
 
+\begin{vexample}
+    \signature
+\end{vexample}
+
+\begin{vexample}
+    \signature[
+      name = {珞珈学子},
+      place = {桂五},
+      date = {2022年某个周一}
+    ]
+\end{vexample}
 
 \subsubsection{ 勘误命令 \tn{correction} }
 
 一些书或文章中难免会有一些笔误甚至是错误的地方，这个时候可以使用 \tn{correction} 命令。
 
-\begin{latexcode}
+\begin{vexample}
     \correction[
       book = {《数学讲义》},   % 书籍
       page = {88},             % 页数
@@ -112,10 +105,10 @@
         常识性问题，无须多言
       }
     ]
-\end{latexcode}
+\end{vexample}
 
 
-\begin{latexcode}
+\begin{floatexample}
     \correction[
       paper = {How to learn math},   % 文章
       page = {2},              % 页数
@@ -132,7 +125,7 @@
         常识性问题，无须多言
       }
     ]
-\end{latexcode}
+\end{floatexample}
 
 
 \subsection{环境}
@@ -184,7 +177,7 @@
 读书笔记模版中最重要的部分，也就是对于书或文章内容的理解和感悟，或是证明细节的补充等等。
 
 
-\begin{latexcode}
+\begin{vexample}
     \begin{detail}[
       paper   = {Function analysis notes},   % 论文、文章
       page = {103},                          % 页码
@@ -197,9 +190,9 @@
     ]
       这段文字是用来测试效果的，没有实际含义
     \end{detail}
-\end{latexcode}
+\end{vexample}
 
-\begin{latexcode}
+\begin{vexample}
     \begin{detail}[
       book = {《泛函分析讲义》},  % 书籍
       page = {103},               % 页码
@@ -212,7 +205,7 @@
     ]
       这段文字是用来测试效果的，没有实际含义
     \end{detail}
-\end{latexcode}
+\end{vexample}
 
 
 
@@ -220,11 +213,34 @@
 
 如果老师上课布置了习题或是习题课上的内容，可以使用 \env{exercise} 环境，但是要注意，为了更好地实现模块化效果，一个 \env{exercise} 环境是一道题，该环境主要参考 zepinglee 的 \cls{exam-zh} 项目 \footnote{ \url{https://gitee.com/zepinglee/exam-zh}}。
 
+\begin{vexample}
+    \begin{exercise}
+      这是一个练习
+    \end{exercise}
+
+    \begin{exercise}
+      这是一个练习
+    \end{exercise}
+\end{vexample}
+
+
 
 
 \subsubsection{ 充分性、必要性环境 \env{sufficiency} \env{necessity}}
 
 为了更好地实现模块化，且在证明过程中充分性和必要性更加清楚，充分性和必要性也写了一个环境。
 
+\begin{vexample}
+    \begin{proof}
+      \begin{necessity}
+        简单
+      \end{necessity}
+    
+      \begin{sufficiency}
+        不难
+        \qedhere
+      \end{sufficiency}
+    \end{proof}
+\end{vexample}
 
 \end{document}

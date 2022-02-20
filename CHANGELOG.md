@@ -6,6 +6,7 @@
 - 基本完成`correction`命令的编写
 - 增加了`exercise`环境的章节初`index`设置为0的代码
 - 增加充分必要性的`necessity`和`sufficiency`环境
+- 基本完成用户手册的编写
 
 ### Fixed
 - 修复几个环境可选参数不能分行问题
