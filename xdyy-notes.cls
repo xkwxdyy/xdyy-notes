@@ -7,7 +7,7 @@
 \NeedsTeXFormat{LaTeX2e}[2017/04/15]
 \RequirePackage{expl3}
 \RequirePackage{xparse}
-\ProvidesExplClass {xdyy-notes} {2022-02-17} {v0.0.1} 
+\ProvidesExplClass {xdyy-notes} {2022-02-20} {v0.0.2} 
   {A LaTeX class for taking math notes.}
 
 % 检查 LaTeX2e kernel 版本
@@ -86,6 +86,9 @@
 \RequirePackage { needspace }
 \RequirePackage { varwidth }
 \RequirePackage { biblatex }
+\RequirePackage { amsthm }
+\RequirePackage { thmtools }
+\RequirePackage [ most ] { tcolorbox }
 
 % 处理参考文献
 \PassOptionsToPackage 
@@ -588,12 +591,15 @@
   }
   {
     \vfil
-    \signature[#1] 
+    \group_begin:
+      \keys_set:nn { xdyy-notes } {#1}
+      \signature
+    \group_end:
     \vfil
   }
 
 
-% 前言的签名落款
+% 前言的签名落款 \signature 命令
 \tl_new:N \l__xdyynotes_signature_name_tl
 \tl_new:N \l__xdyynotes_signature_place_tl
 \tl_new:N \l__xdyynotes_signature_date_tl
@@ -608,10 +614,7 @@
     date .initial:n = {\today}
   }
 
-% \signature 签名落款命令
-% 姓名、地点、时间
-% 夏康玮于珞珈山
-% 2022年2月17日
+
 \NewDocumentCommand { \signature } { O{} }
   {
     \group_begin:
@@ -628,3 +631,194 @@
   }
 
 
+% 引用环境 quotation
+
+\tl_new:N \l__xdyynotes_quotation_title_input_tl
+\tl_new:N \l__xdyynotes_quotation_title_output_tl
+\tl_new:N \l__xdyynotes_quotation_book_title_input_tl
+\tl_new:N \l__xdyynotes_quotation_book_title_output_tl
+\tl_new:N \l__xdyynotes_quotation_paper_title_input_tl
+\tl_new:N \l__xdyynotes_quotation_paper_title_output_tl
+\tl_new:N \l__xdyynotes_quotation_author_input_tl
+\tl_new:N \l__xdyynotes_quotation_author_output_tl
+\tl_new:N \l__xdyynotes_quotation_year_input_tl
+\tl_new:N \l__xdyynotes_quotation_year_output_tl
+\tl_new:N \l__xdyynotes_quotation_edition_input_tl
+\tl_new:N \l__xdyynotes_quotation_edition_output_tl
+\tl_new:N \l__xdyynotes_quotation_page_input_tl
+\tl_new:N \l__xdyynotes_quotation_page_output_tl
+
+\keys_define:nn { xdyy-notes / quotation }
+  {
+    title .tl_set:N = \l__xdyynotes_quotation_title_input_tl,
+    book .tl_set:N = \l__xdyynotes_quotation_book_title_input_tl,
+    paper .tl_set:N = \l__xdyynotes_quotation_paper_title_input_tl,
+    author .tl_set:N = \l__xdyynotes_quotation_author_input_tl,
+    year .tl_set:N = \l__xdyynotes_quotation_year_input_tl,
+    edition .tl_set:N = \l__xdyynotes_quotation_edition_input_tl,
+    page .tl_set:N = \l__xdyynotes_quotation_page_input_tl,
+  }
+
+\declaretheorem
+  [
+    name    = 引用,
+    refname = 引用,
+    within  = section
+  ]{Quotation}
+
+\cs_new:Nn \__xdyynotes_quotation_page_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_quotation_page_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_quotation_page_output_tl
+          {
+            Page:~ \l__xdyynotes_quotation_page_input_tl
+          }
+      }
+  }
+
+\cs_new:Nn \__xdyynotes_quotation_title_set:
+  {
+    \bool_if:nTF
+      {
+        \tl_if_blank_p:V \l__xdyynotes_quotation_book_title_input_tl
+        &&
+        \tl_if_blank_p:V \l__xdyynotes_quotation_paper_title_input_tl
+      }
+      {
+        \tl_set:Nn \l__xdyynotes_quotation_title_output_tl 
+          {
+            \l__xdyynotes_quotation_title_input_tl
+            \l__xdyynotes_quotation_edition_output_tl
+          }
+      }
+      {
+        % 先对book或paper的input进行处理
+        \__xdyynotes_quotation_book_output_set:
+        \__xdyynotes_quotation_paper_output_set:
+        % 然后再赋值给title的output
+        \tl_if_blank:VTF \l__xdyynotes_quotation_book_title_input_tl
+          {
+            \tl_set:Nn \l__xdyynotes_quotation_title_output_tl 
+              {
+                \l__xdyynotes_quotation_paper_title_output_tl
+              }
+          }
+          {
+            \tl_set:Nn \l__xdyynotes_quotation_title_output_tl 
+              {
+                \l__xdyynotes_quotation_book_title_output_tl
+              }
+          }
+      }
+  }
+
+\cs_new:Nn \__xdyynotes_quotation_paper_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_quotation_paper_title_output_tl
+      {
+        \group_begin:
+          \normalfont
+          \l__xdyynotes_quotation_paper_title_input_tl
+          \l__xdyynotes_quotation_edition_output_tl
+        \group_end:
+      }
+  }
+
+\cs_new:Nn \__xdyynotes_quotation_book_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_quotation_book_title_output_tl
+      {
+        \group_begin:
+          \itshape 
+          \l__xdyynotes_quotation_book_title_input_tl
+          \l__xdyynotes_quotation_edition_output_tl
+        \group_end:
+      }
+  }
+
+\cs_new:Nn \__xdyynotes_quotation_author_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_quotation_author_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_quotation_author_output_tl
+          {
+            \group_begin:
+              \normalfont \l__xdyynotes_quotation_author_input_tl
+            \group_end:
+            .~
+          }
+      }
+  }
+
+\cs_new:Nn \__xdyynotes_quotation_year_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_quotation_year_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_quotation_year_output_tl
+          {
+            , ~
+            \group_begin:
+              \normalfont \l__xdyynotes_quotation_year_input_tl
+            \group_end:
+          }
+      }
+  }
+
+\cs_new:Nn \__xdyynotes_quotation_edition_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_quotation_edition_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_quotation_edition_output_tl
+          { , ~\l__xdyynotes_quotation_edition_input_tl }
+      }
+  }
+
+\RenewDocumentEnvironment { quotation } { O{} +b }
+  {
+    \begin{Quotation}
+      #2
+  }
+  {
+      \par
+      \group_begin:
+        \keys_set:nn { xdyy-notes / quotation } {#1}
+        % 设置title
+        \__xdyynotes_quotation_title_set:
+        % 设置版本
+        \__xdyynotes_quotation_edition_set:
+        % 设置作者
+        \__xdyynotes_quotation_author_set:
+        % 设置年份
+        \__xdyynotes_quotation_year_set:
+        % 设置页数
+        \__xdyynotes_quotation_page_set:
+        \begin{flushright}
+          --- ~
+          \l__xdyynotes_quotation_author_output_tl
+          \l__xdyynotes_quotation_title_output_tl
+          \l__xdyynotes_quotation_year_output_tl
+          \quad 
+          \l__xdyynotes_quotation_page_output_tl
+        \end{flushright}
+      \group_end:
+    \end{Quotation}
+  }
+
+\tcolorboxenvironment { quotation }
+  {
+    enhanced~jigsaw, 
+    parbox = false,
+    breakable,
+    left = 3mm,
+    top  = 1mm,
+    bottom = 4mm,
+    right = 3mm,
+    % blanker,
+    frame~hidden,
+    % boxrule = 0pt,
+    before~skip = 10pt,
+    after~skip = 10pt,
+    borderline~west = {1mm}{0pt}{gray},
+    colback = lightgray!20!white,
+  }

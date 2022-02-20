@@ -5,14 +5,12 @@
     author            = {夏康玮},
     title             = { \cls{xdyy-notes} 文类},
     email             = {kangweixia_xdyy@163.com},
-    date              = {2022-02-17},
-    version           = {0.0.1},
+    date              = {2022-02-20},
+    version           = {0.0.2},
     github-repository = {https://github.com/xkwxdyy/xdyy-notes},
     gitee-repository  = {https://gitee.com/xkwxdyy/xdyy-notes},
   }
 }
-
-
 
 
 
@@ -23,7 +21,7 @@
 
 \section{文类简介}
 
-本文类主要用于个性化定制一个本人用的读书笔记文类：
+本文类主要用于数学读书笔记：
 
 \begin{enumerate}
   \item 用于补充书中的细节，写读书笔记
@@ -75,12 +73,65 @@
 
 \subsection{环境}
 
+\subsubsection{ 前言环境 \env{preface} }
 \begin{function}[added = 2022-02-17]{preface}
   \begin{syntax}
-    |\begin{preface}[name = ..., place = ..., date = ...]|
+    |\begin{preface}[signature = {name = ..., place = ..., date = ...}]|
       |  ...|
     |\end{preface}|
   \end{syntax}
   前言环境，可选参数继承于 \tn{signature} 的参数，设置落款的姓名，地点和日期
 \end{function}
+
+
+
+\subsubsection{ 引用环境 \env{quotation} }
+
+为了一些方便可能需要在笔记中引用别的书籍文章中的原文，这个时候就需要用 \env{quotation} 环境
+
+\begin{vexample}
+    \begin{quotation}[
+      book    = {《泛函分析讲义》},      % 书籍
+      edition = {第二版},                 % 版本
+      year    = {2017},                  % 年份
+      author  = {xdyy},                  % 作者
+      page    = {11-14}                  % 页码
+    ]\label{quo:test1}
+      $E = m c^2$， 这 \ref{quo:test1} 是一个引用
+    \end{quotation}
+\end{vexample}
+
+\begin{vexample}
+    \begin{quotation}[
+      paper   = {Function analysis notes},   % 论文、文章
+      edition = {3rd},                       % 版本
+      year    = {2022},                      % 年份
+      author  = {xdyy},                      % 作者
+      page    = {11-14}                      % 页码
+    ]\label{quo:test2}
+      $E = m c^2$， 这 \ref{quo:test2} 是一个引用
+    \end{quotation}
+\end{vexample}
+
+\subsubsection{ 细节补充环境 \env{detail} }
+
+读书笔记模版中最重要的部分，也就是对于书或文章内容的理解和感悟，或是证明细节的补充等等。
+
+
+
+\subsubsection{ 习题环境 \env{exercise} }
+
+如果老师上课布置了习题或是习题课上的内容，可以使用 \env{exercise} 环境，但是要注意，为了更好地实现模块化效果，一个 \env{exercise} 环境是一道题，该环境主要参考 zepinglee 的 \cls{exam-zh} 项目 \footnote{ \url{https://gitee.com/zepinglee/exam-zh}}。
+
+
+
+\subsubsection{ 勘误环境 \env{correction} }
+
+一些书或文章中难免会有一些笔误甚至是错误的地方，这个时候可以使用 \env{correction} 环境。
+
+
+
+\subsubsection{ 充分性、必要性环境 \env{sufficiency} \env{necessity}}
+
+为了更好地实现模块化，且在证明过程中充分性和必要性更加清楚，充分性和必要性也写了一个环境。
 \end{document}
