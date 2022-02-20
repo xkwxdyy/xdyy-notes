@@ -26,7 +26,7 @@
 
 
 % 使用 l3keys 定义 \xdyynotesetup 配置命令
-\NewDocumentCommand \xdyynotesetup { m }
+\NewDocumentCommand \xdyynotesetup { +m }
   { \keys_set:nn { xdyy-notes } {#1} }
 
 \keys_define:nn { xdyy-notes }
@@ -588,7 +588,7 @@
 
 
 % 前言
-\NewDocumentEnvironment { preface } { O{} +b }
+\NewDocumentEnvironment { preface } { +O{} +b }
   {
     \chapter*{Preface}
     #2
@@ -782,7 +782,7 @@
       }
   }
 
-\RenewDocumentEnvironment { quotation } { O{} +b }
+\RenewDocumentEnvironment { quotation } { +O{} +b }
   {
     \begin{Quotation}
       #2
@@ -1014,7 +1014,7 @@
       }
   }
 
-\NewDocumentEnvironment { detail } { O{} +b }
+\NewDocumentEnvironment { detail } { +O{} +b }
   {
     \group_begin:
       \keys_set:nn { xdyy-notes / detail } {#1}
@@ -1062,7 +1062,7 @@
   }
 
 
-\NewDocumentEnvironment { exercise } { O { } +b }
+\NewDocumentEnvironment { exercise } { +O { } +b }
   { \__xdyynotes_exercise_begin:nn {#1}{#2} }
   { \__xdyynotes_exercise_end:nn {#1}{#2} }
 
@@ -1292,7 +1292,7 @@
       { 
         enhanced,
         breakable,
-        % parbox = false,   % 增加的话，内层的tcolorbox会和上方粘连
+        parbox = false,   % 增加的话，内层的tcolorbox会和上方粘连
         left = 2mm,
         right = 3mm,
         middle = 3mm,
@@ -1304,7 +1304,7 @@
       }
   }
 
-\NewDocumentCommand { \correction } { O{} }
+\NewDocumentCommand { \correction } { +O{} }
   {
     \group_begin:
       \keys_set:nn { xdyy-notes / correction } {#1}
