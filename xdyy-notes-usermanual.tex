@@ -12,11 +12,42 @@
   }
 }
 
+\usepackage{xchoices}
 
 
 \begin{document}
 \maketitle
 \tableofcontents
+
+
+
+\section{计划}
+
+本节主要列举想要编写的新功能。
+
+\begin{enumerate}
+  \item 细节补充
+    \begin{itemize}
+      \item 读书笔记中最重要的就是对书中一些地方进行细节的补充和阐述自己的理解
+      \item 特别是一些教材喜欢跳步，就需要自己去尝试补充细节，让证明更加完善
+    \end{itemize}
+    需要涉及到的参数：
+    \begin{xchoices}[label-style = arabic]
+      \item 补充哪本书的内容，版本等细节
+      \item 补充的页码
+      \item 补充的原文是什么
+      \item 补充了什么
+    \end{xchoices}
+  \item 勘误
+    教材难免会有一些勘误的地方，可以汇总起来方便查找和分享。需要涉及到的参数：
+      \begin{enumerate}
+        \item 勘误的是什么书还是文献
+        \item 勘误的版本？或者出版时间之类的补充细节
+        \item 勘误的原文
+        \item 勘误后的修改文
+        \item 为什么是需要勘误的以及自己的理解
+      \end{enumerate}
+\end{enumerate}
 
 
 \section{文类简介}
@@ -112,6 +143,8 @@
       $E = m c^2$， 这 \ref{quo:test2} 是一个引用
     \end{quotation}
 \end{vexample}
+
+
 
 \subsubsection{ 细节补充环境 \env{detail} }
 
