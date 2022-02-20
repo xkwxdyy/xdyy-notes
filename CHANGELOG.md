@@ -4,6 +4,8 @@
 - 完成`quotation`环境的重写
 - 完成`detail`与`exercise`环境的编写
 - 基本完成`correction`命令的编写
+- 增加了`exercise`环境的章节初`index`设置为0的代码
+- 增加充分必要性的`necessity`和`sufficiency`环境
 
 ### Fixed
 - 修复几个环境可选参数不能分行问题

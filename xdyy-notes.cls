@@ -1355,3 +1355,41 @@
       \end{tcolorbox}
     \group_end:
   }
+
+
+% 定义充分必要性环境
+% 必要性
+\NewDocumentEnvironment { necessity } { +b }
+  {
+    \par \noindent
+    \framebox
+      {
+        $
+          \xLongrightarrow 
+            { \text{ \normalsize 必要性 } }
+        $ 
+      }
+    \par \addvspace{ .5em plus .5em minus .2em }
+    \par #1
+    \par \addvspace{ .5em plus .5em minus .2em }
+  }
+  {}
+
+% 充分性
+\NewDocumentEnvironment { sufficiency } { +b }
+  {
+    \par \noindent 
+    \framebox
+      {
+        $
+          \xLongleftarrow 
+            { \text{ \normalsize 充分性 } }
+        $ 
+      }
+    \par \addvspace{ .5em plus .5em minus .2em }
+    \par #1
+    \par \addvspace{ .5em plus .5em minus .2em }
+  }
+  {
+    % \addvspace{ .5em plus .5em minus .2em }
+  }
