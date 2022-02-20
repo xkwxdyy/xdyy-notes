@@ -36,6 +36,7 @@
     hyperref .meta:nn = { xdyy-notes / hyperref }{#1},
     style .meta:nn = { xdyy-notes / style }{#1},
     quotation .meta:nn = { xdyy-notes / quotation }{#1},
+    detail .meta:nn = { xdyy-notes / detail }{#1},
   }
 
 
@@ -634,20 +635,24 @@
 
 % 引用环境 quotation
 
-\tl_new:N \l__xdyynotes_quotation_title_input_tl
-\tl_new:N \l__xdyynotes_quotation_title_output_tl
-\tl_new:N \l__xdyynotes_quotation_book_title_input_tl
-\tl_new:N \l__xdyynotes_quotation_book_title_output_tl
-\tl_new:N \l__xdyynotes_quotation_paper_title_input_tl
-\tl_new:N \l__xdyynotes_quotation_paper_title_output_tl
-\tl_new:N \l__xdyynotes_quotation_author_input_tl
-\tl_new:N \l__xdyynotes_quotation_author_output_tl
-\tl_new:N \l__xdyynotes_quotation_year_input_tl
-\tl_new:N \l__xdyynotes_quotation_year_output_tl
-\tl_new:N \l__xdyynotes_quotation_edition_input_tl
-\tl_new:N \l__xdyynotes_quotation_edition_output_tl
-\tl_new:N \l__xdyynotes_quotation_page_input_tl
-\tl_new:N \l__xdyynotes_quotation_page_output_tl
+\cs_new:Npn \__xdyynotes_quotation_define_input_tl:n #1
+  {
+    \tl_new:c { l__xdyynotes_quotation_ #1 _input_tl }
+  }
+
+\cs_new:Npn \__xdyynotes_quotation_define_output_tl:n #1
+  {
+    \tl_new:c { l__xdyynotes_quotation_ #1 _output_tl }
+  }
+
+\clist_map_function:nN
+  { title, book, paper, author, year, edition, page }
+  \__xdyynotes_quotation_define_input_tl:n
+
+\clist_map_function:nN
+  { title, book, paper, author, year, edition, page }
+  \__xdyynotes_quotation_define_output_tl:n
+
 
 \keys_define:nn { xdyy-notes / quotation }
   {
@@ -823,3 +828,48 @@
     borderline~west = {1mm}{0pt}{gray},
     colback = lightgray!20!white,
   }
+
+
+% 细节补充环境 detail
+
+\cs_new:Npn \__xdyynotes_detail_define_input_tl:n #1
+  {
+    \tl_new:c { l__xdyynotes_detail_ #1 _input_tl }
+  }
+
+\cs_new:Npn \__xdyynotes_detail_define_output_tl:n #1
+  {
+    \tl_new:c { l__xdyynotes_detail_ #1 _output_tl }
+  }
+
+\clist_map_function:nN
+  {
+    book, paper, edition, author, page, original
+  }\__xdyynotes_detail_define_input_tl:n
+
+\clist_map_function:nN
+{
+  book, paper, edition, author, page, original
+}\__xdyynotes_detail_define_output_tl:n
+
+\keys_define:nn { xdyy-notes / detail }
+  {
+    book .tl_set:N = \l__xdyynotes_detail_book_input_tl,
+    paper .tl_set:N = \l__xdyynotes_detail_paper_input_tl,
+    edition .tl_set:N = \l__xdyynotes_detail_edition_input_tl,
+    author .tl_set:N = \l__xdyynotes_detail_author_input_tl,
+    page .tl_set:N = \l__xdyynotes_detail_page_input_tl,
+    original .tl_set:N = \l__xdyynotes_detail_original_input_tl,
+  }
+
+
+\NewDocumentEnvironment { detail } { O{} +b }
+  {
+    \group_begin:
+      \keys_set:nn { xdyy-notes / detail } {#1}
+      before:~ \l__xdyynotes_detail_original_input_tl \par 
+      after:~
+      #2
+    \group_end:
+  }
+  {}
