@@ -35,6 +35,7 @@
     signature .meta:nn = { xdyy-notes / signature } {#1},
     hyperref .meta:nn = { xdyy-notes / hyperref }{#1},
     style .meta:nn = { xdyy-notes / style }{#1},
+    quotation .meta:nn = { xdyy-notes / quotation }{#1},
   }
 
 

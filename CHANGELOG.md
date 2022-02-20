@@ -2,6 +2,7 @@
 ## [v0.0.2] - 2022-2-20
 ### Added
 - 完成`quotation`环境的重写
+- 设置`xdyynotesetup`的`quotation`接口
 
 ## [v0.0.1] - 2022-2-17
 
