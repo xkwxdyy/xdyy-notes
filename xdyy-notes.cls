@@ -565,7 +565,7 @@
 \setlist{nosep}
 
 \setlist[enumerate, 2]{
-  left       = 2em,
+  left       = 0em,
   labelsep   = 0pt,
   label = { （ \arabic * ） }
 }
@@ -657,8 +657,8 @@
 \keys_define:nn { xdyy-notes / quotation }
   {
     title .tl_set:N = \l__xdyynotes_quotation_title_input_tl,
-    book .tl_set:N = \l__xdyynotes_quotation_book_title_input_tl,
-    paper .tl_set:N = \l__xdyynotes_quotation_paper_title_input_tl,
+    book .tl_set:N = \l__xdyynotes_quotation_book_input_tl,
+    paper .tl_set:N = \l__xdyynotes_quotation_paper_input_tl,
     author .tl_set:N = \l__xdyynotes_quotation_author_input_tl,
     year .tl_set:N = \l__xdyynotes_quotation_year_input_tl,
     edition .tl_set:N = \l__xdyynotes_quotation_edition_input_tl,
@@ -687,9 +687,9 @@
   {
     \bool_if:nTF
       {
-        \tl_if_blank_p:V \l__xdyynotes_quotation_book_title_input_tl
+        \tl_if_blank_p:V \l__xdyynotes_quotation_book_input_tl
         &&
-        \tl_if_blank_p:V \l__xdyynotes_quotation_paper_title_input_tl
+        \tl_if_blank_p:V \l__xdyynotes_quotation_paper_input_tl
       }
       {
         \tl_set:Nn \l__xdyynotes_quotation_title_output_tl 
@@ -703,17 +703,17 @@
         \__xdyynotes_quotation_book_output_set:
         \__xdyynotes_quotation_paper_output_set:
         % 然后再赋值给title的output
-        \tl_if_blank:VTF \l__xdyynotes_quotation_book_title_input_tl
+        \tl_if_blank:VTF \l__xdyynotes_quotation_book_input_tl
           {
             \tl_set:Nn \l__xdyynotes_quotation_title_output_tl 
               {
-                \l__xdyynotes_quotation_paper_title_output_tl
+                \l__xdyynotes_quotation_paper_output_tl
               }
           }
           {
             \tl_set:Nn \l__xdyynotes_quotation_title_output_tl 
               {
-                \l__xdyynotes_quotation_book_title_output_tl
+                \l__xdyynotes_quotation_book_output_tl
               }
           }
       }
@@ -721,11 +721,11 @@
 
 \cs_new:Nn \__xdyynotes_quotation_paper_output_set:
   {
-    \tl_set:Nn \l__xdyynotes_quotation_paper_title_output_tl
+    \tl_set:Nn \l__xdyynotes_quotation_paper_output_tl
       {
         \group_begin:
           \normalfont
-          \l__xdyynotes_quotation_paper_title_input_tl
+          \l__xdyynotes_quotation_paper_input_tl
           \l__xdyynotes_quotation_edition_output_tl
         \group_end:
       }
@@ -733,11 +733,11 @@
 
 \cs_new:Nn \__xdyynotes_quotation_book_output_set:
   {
-    \tl_set:Nn \l__xdyynotes_quotation_book_title_output_tl
+    \tl_set:Nn \l__xdyynotes_quotation_book_output_tl
       {
         \group_begin:
           \itshape 
-          \l__xdyynotes_quotation_book_title_input_tl
+          \l__xdyynotes_quotation_book_input_tl
           \l__xdyynotes_quotation_edition_output_tl
         \group_end:
       }
@@ -765,7 +765,7 @@
           {
             , ~
             \group_begin:
-              \normalfont \l__xdyynotes_quotation_year_input_tl
+              \normalfont \l__xdyynotes_quotation_year_input_tl.
             \group_end:
           }
       }
@@ -832,6 +832,7 @@
 
 % 细节补充环境 detail
 
+% 声明变量
 \cs_new:Npn \__xdyynotes_detail_define_input_tl:n #1
   {
     \tl_new:c { l__xdyynotes_detail_ #1 _input_tl }
@@ -844,13 +845,17 @@
 
 \clist_map_function:nN
   {
-    book, paper, edition, author, page, original
-  }\__xdyynotes_detail_define_input_tl:n
+    book, paper, edition, author, 
+    page, original, title, year
+  }
+  \__xdyynotes_detail_define_input_tl:n
 
 \clist_map_function:nN
-{
-  book, paper, edition, author, page, original
-}\__xdyynotes_detail_define_output_tl:n
+  {
+    book, paper, edition, author, 
+    page, original, title, year
+  }
+  \__xdyynotes_detail_define_output_tl:n
 
 \keys_define:nn { xdyy-notes / detail }
   {
@@ -860,16 +865,237 @@
     author .tl_set:N = \l__xdyynotes_detail_author_input_tl,
     page .tl_set:N = \l__xdyynotes_detail_page_input_tl,
     original .tl_set:N = \l__xdyynotes_detail_original_input_tl,
+    title .tl_set:N = \l__xdyynotes_detail_title_input_tl,
+    year .tl_set:N = \l__xdyynotes_detail_year_input_tl,
   }
 
+
+\cs_new:Nn \__xdyynotes_detail_original_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_detail_original_output_tl
+      {
+        \textbf { 原文：}
+        \l__xdyynotes_detail_original_input_tl
+      }
+  }
+\cs_new:Nn \__xdyynotes_detail_author_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_detail_author_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_detail_author_output_tl
+          {
+            \group_begin:
+              \itshape \l__xdyynotes_detail_author_input_tl
+            \group_end:
+            .~
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_detail_page_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_detail_page_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_detail_page_output_tl
+          {
+            \quad
+            Page:~ \l__xdyynotes_detail_page_input_tl
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_detail_edition_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_detail_edition_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_detail_edition_output_tl
+          {
+            , ~
+            % \group_begin:
+              \l__xdyynotes_detail_edition_input_tl
+            % \group_end:
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_detail_book_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_detail_book_output_tl
+      {
+        \group_begin:
+          \itshape 
+          \l__xdyynotes_detail_book_input_tl
+          \l__xdyynotes_detail_edition_output_tl
+        \group_end:
+      }
+  }
+\cs_new:Nn \__xdyynotes_detail_paper_output_set:
+  {
+    \tl_set:Nn \l__xdyynotes_detail_paper_output_tl
+      {
+        \group_begin:
+          \normalfont
+          \l__xdyynotes_detail_paper_input_tl
+          \l__xdyynotes_detail_edition_output_tl
+        \group_end:
+      }
+  }
+\cs_new:Nn \__xdyynotes_detail_title_output_set:
+  {
+    \__xdyynotes_detail_book_output_set:
+    \__xdyynotes_detail_paper_output_set:
+    \tl_if_blank:VTF \l__xdyynotes_detail_title_input_tl
+      {
+        \tl_if_blank:VTF \l__xdyynotes_detail_book_input_tl
+          {
+            % 如果book值是空的，就设置title为paper系列
+            \tl_set:Nn \l__xdyynotes_detail_title_output_tl
+              {
+                \l__xdyynotes_detail_author_output_tl
+                \l__xdyynotes_detail_paper_output_tl
+                \l__xdyynotes_detail_year_output_tl
+                \l__xdyynotes_detail_page_output_tl
+              }
+          }
+          {
+            % 如果book值不是空的，就设置title为book系列
+            \tl_set:Nn \l__xdyynotes_detail_title_output_tl
+              {
+                \l__xdyynotes_detail_author_output_tl
+                \l__xdyynotes_detail_book_output_tl
+                \l__xdyynotes_detail_year_output_tl
+                \l__xdyynotes_detail_page_output_tl
+              }
+          }
+      }
+      {
+        \tl_set:Nn \l__xdyynotes_detail_title_output_tl
+          {
+            \group_begin:
+              \itshape
+              \l__xdyynotes_detail_title_input_tl
+            \group_end:
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_detail_year_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_detail_year_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_detail_year_output_tl
+          {
+            , ~
+            \group_begin:
+              \normalfont \l__xdyynotes_detail_year_input_tl.
+            \group_end:
+          }
+      }
+  }
+% 勘误后的内容
+\cs_new:Npn \__xdyynotes_detail_edited_output_set:n #1
+  {
+    \textbf{ 细节补充：}
+    #1
+  }
+\tcbset
+  {
+    detail / .style =
+      { 
+        enhanced,
+        breakable,
+        % parbox = false,   % 增加的话，内层的tcolorbox会和上方粘连
+        left = 2mm,
+        right = 3mm,
+        middle = 3mm,
+        bottom = 1mm,
+        segmentation~style = 
+          { dash~dot, black, line~width = 0.3pt }, 
+        colback = white,
+        colframe = gray,
+        valign~lower = bottom
+      }
+  }
 
 \NewDocumentEnvironment { detail } { O{} +b }
   {
     \group_begin:
       \keys_set:nn { xdyy-notes / detail } {#1}
-      before:~ \l__xdyynotes_detail_original_input_tl \par 
-      after:~
-      #2
+      % 处理author
+      \__xdyynotes_detail_author_output_set:
+      % 处理year
+      \__xdyynotes_detail_year_output_set:
+      % 处理page
+      \__xdyynotes_detail_page_output_set:
+      % 处理original
+      \__xdyynotes_detail_original_output_set:
+      % 处理edition
+      \__xdyynotes_detail_edition_output_set:
+      % 处理标题
+      \__xdyynotes_detail_title_output_set:
+      % 输出
+      \begin{tcolorbox}
+        [
+          detail,
+          title = { \l__xdyynotes_detail_title_output_tl }
+        ]
+        \l__xdyynotes_detail_original_output_tl
+        \tcblower
+        \__xdyynotes_detail_edited_output_set:n {#2}
+      \end{tcolorbox}
     \group_end:
   }
   {}
+
+
+
+% 习题环境 exercise
+
+\skip_new:N \l__xdyynotes_exercise_top_sep_skip
+\skip_new:N \l__xdyynotes_exercise_bottom_sep_skip
+\int_new:N \g__xdyynotes_exercise_index_int
+
+\keys_define:nn { xdyy-notes / exercise }
+  {
+    top-sep .skip_set:N = \l__xdyynotes_exercise_top_sep_skip,
+    top-sep .initial:n = .5em plus .5em minus .2em,
+    bottom-sep .skip_set:N = \l__xdyynotes_exercise_bottom_sep_skip,
+    bottom-sep .initial:n = .5em plus .5em minus .2em,
+    index .int_gset:N = \g__xdyynotes_exercise_index_int,
+  }
+
+
+\NewDocumentEnvironment { exercise } { O { } +b }
+  { \__xdyynotes_exercise_begin:nn {#1}{#2} }
+  { \__xdyynotes_exercise_end:nn {#1}{#2} }
+
+\cs_new:Npn \__xdyynotes_exercise_begin:nn #1#2
+  {
+    \par
+    \int_gincr:N \g__xdyynotes_exercise_index_int
+    \keys_set:nn { xdyy-notes / exercise } { #1 }
+    \addvspace { \l__xdyynotes_exercise_top_sep_skip }
+    % 严格禁止孤行和寡行
+    \int_set:Nn \clubpenalty { 10000 }
+    \int_set:Nn \widowpenalty { 10000 }
+    % 尽量避免在题目中间换行
+    \int_set:Nn \interlinepenalty { 301 }
+    \int_incr:N \@enumdepth
+    \list { \int_use:N \g__xdyynotes_exercise_index_int . }
+      {
+        \dim_set:Nn \topsep    { 0pt }
+        \dim_set:Nn \partopsep { 0pt }
+        \dim_set:Nn \itemsep   { 0pt }
+        \dim_set:Nn \parsep    { 0pt }
+        \dim_set:Nn \leftmargin { 2em }
+        \dim_set:Nn \itemindent { 0pt }
+        \dim_set:Nn \labelsep   { .7em  }
+        \dim_set:Nn \labelwidth { 1.3em }
+        \dim_set_eq:NN \listparindent \itemindent
+      }
+    \item \relax
+  }
+
+
+\cs_new:Npn \__xdyynotes_exercise_end:nn #1#2
+  {
+      #2
+    \endlist
+    \addvspace { \l__xdyynotes_exercise_bottom_sep_skip }
+  }
