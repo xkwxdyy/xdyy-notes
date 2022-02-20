@@ -1282,6 +1282,7 @@
           {
             \tcblower
             \textbf{ 补充解释：}
+            \par
             \l__xdyynotes_correction_explanation_input_tl
           }
       }
@@ -1329,7 +1330,7 @@
           title = { \l__xdyynotes_correction_title_output_tl }
         ]
         \l__xdyynotes_correction_original_output_tl
-        \par
+        \par \noindent
         \l__xdyynotes_correction_revision_output_tl
         % 设置explanation部分
         \__xdyynotes_correction_explanation_output_set:
