@@ -876,7 +876,9 @@
   {
     \tl_set:Nn \l__xdyynotes_detail_original_output_tl
       {
-        \textbf { 原文：}
+        \textbf 
+          % { 原文：}
+          { 【原文】}
         \l__xdyynotes_detail_original_input_tl
       }
   }
@@ -993,7 +995,7 @@
 % 补充细节
 \cs_new:Npn \__xdyynotes_detail_add_output_set:n #1
   {
-    \textbf{ 细节补充：}
+    \textbf{ 【细节补充】 }
     #1
   }
 \tcbset
@@ -1101,7 +1103,22 @@
     \addvspace { \l__xdyynotes_exercise_bottom_sep_skip }
   }
 
-% \pretocmd
+\cs_set_eq:NN \__xdyynotes_pretocmd:nnnn \pretocmd
+\cs_new:Npn \__xdyynotes_exercise_index_zero_set:n #1
+  {
+    \__xdyynotes_pretocmd:nnnn {#1}
+      {
+        \int_gzero:N \g__xdyynotes_exercise_index_int
+      }
+      {}{}
+  }
+% 在新的章节开启时把exercise的index设为0
+\clist_map_function:nN
+  {
+    \chaper, \section, \subsection
+  }
+  \__xdyynotes_exercise_index_zero_set:n
+
 
 % 勘误环境 correction
 
@@ -1151,7 +1168,7 @@
   {
     \tl_set:Nn \l__xdyynotes_correction_original_output_tl
       {
-        \textbf { 勘误前：}
+        \textbf { 【勘误前】 }
         \l__xdyynotes_correction_original_input_tl
       }
   }
@@ -1159,7 +1176,7 @@
   {
     \tl_set:Nn \l__xdyynotes_correction_revision_output_tl
       {
-        \textbf { 勘误后：}
+        \textbf { 【勘误后】 }
         \l__xdyynotes_correction_revision_input_tl
       }
   }
@@ -1281,7 +1298,7 @@
         \tl_set:Nn \l__xdyynotes_correction_explanation_output_tl
           {
             \tcblower
-            \textbf{ 补充解释：}
+            \textbf{ 【补充解释】 }
             \par
             \l__xdyynotes_correction_explanation_input_tl
           }
