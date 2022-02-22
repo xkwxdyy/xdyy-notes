@@ -1,4 +1,9 @@
 # 更新日志
+## [v0.0.3] - 2022-2-23
+### Added
+- 增加`detail`和`correction`的`line`键值
+
+
 ## [v0.0.2] - 2022-2-20
 ### Added
 - 完成`quotation`环境的重写

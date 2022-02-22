@@ -7,7 +7,7 @@
 \NeedsTeXFormat{LaTeX2e}[2017/04/15]
 \RequirePackage{expl3}
 \RequirePackage{xparse}
-\ProvidesExplClass {xdyy-notes} {2022-02-20} {v0.0.2} 
+\ProvidesExplClass {xdyy-notes} {2022-02-23} {v0.0.3} 
   {A LaTeX class for taking math notes.}
 
 % 检查 LaTeX2e kernel 版本
@@ -848,14 +848,16 @@
 \clist_map_function:nN
   {
     book, paper, edition, author, 
-    page, original, title, year
+    page, original, title, year,
+    line
   }
   \__xdyynotes_detail_define_input_tl:n
 
 \clist_map_function:nN
   {
     book, paper, edition, author, 
-    page, original, title, year
+    page, original, title, year,
+    line
   }
   \__xdyynotes_detail_define_output_tl:n
 
@@ -869,6 +871,7 @@
     original .tl_set:N = \l__xdyynotes_detail_original_input_tl,
     title .tl_set:N = \l__xdyynotes_detail_title_input_tl,
     year .tl_set:N = \l__xdyynotes_detail_year_input_tl,
+    line .tl_set:N = \l__xdyynotes_detail_line_input_tl,
   }
 
 
@@ -903,6 +906,17 @@
           {
             \quad
             Page:~ \l__xdyynotes_detail_page_input_tl
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_detail_line_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_detail_line_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_detail_line_output_tl
+          {
+            \quad
+            Line:~ \l__xdyynotes_detail_line_input_tl
           }
       }
   }
@@ -956,6 +970,7 @@
                 \l__xdyynotes_detail_paper_output_tl
                 \l__xdyynotes_detail_year_output_tl
                 \l__xdyynotes_detail_page_output_tl
+                \l__xdyynotes_detail_line_output_tl
               }
           }
           {
@@ -966,6 +981,7 @@
                 \l__xdyynotes_detail_book_output_tl
                 \l__xdyynotes_detail_year_output_tl
                 \l__xdyynotes_detail_page_output_tl
+                \l__xdyynotes_detail_line_output_tl
               }
           }
       }
@@ -1004,7 +1020,7 @@
       { 
         enhanced,
         breakable,
-        parbox = false,   % 增加的话，内层的tcolorbox会和上方粘连
+        parbox = false,
         left = 2mm,
         right = 3mm,
         middle = 3mm,
@@ -1026,6 +1042,8 @@
       \__xdyynotes_detail_year_output_set:
       % 处理page
       \__xdyynotes_detail_page_output_set:
+      % 处理line
+      \__xdyynotes_detail_line_output_set:
       % 处理original
       \__xdyynotes_detail_original_output_set:
       % 处理edition
@@ -1137,7 +1155,7 @@
   {
     book, paper, edition, author, 
     page, original, title, year,
-    revision, explanation
+    revision, explanation, line
   }
   \__xdyynotes_correction_define_input_tl:n
 
@@ -1145,7 +1163,7 @@
   {
     book, paper, edition, author, 
     page, original, title, year,
-    revision, explanation
+    revision, explanation, line
   }
   \__xdyynotes_correction_define_output_tl:n
 
@@ -1161,6 +1179,7 @@
     year .tl_set:N = \l__xdyynotes_correction_year_input_tl,
     revision .tl_set:N = \l__xdyynotes_correction_revision_input_tl,
     explanation .tl_set:N = \l__xdyynotes_correction_explanation_input_tl,
+    line .tl_set:N = \l__xdyynotes_correction_line_input_tl,
   }
 
 
@@ -1201,6 +1220,17 @@
           {
             \quad
             Page:~ \l__xdyynotes_correction_page_input_tl
+          }
+      }
+  }
+\cs_new:Nn \__xdyynotes_correction_line_output_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_correction_line_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_correction_line_output_tl
+          {
+            \quad
+            Line:~ \l__xdyynotes_correction_line_input_tl
           }
       }
   }
@@ -1254,6 +1284,7 @@
                 \l__xdyynotes_correction_paper_output_tl
                 \l__xdyynotes_correction_year_output_tl
                 \l__xdyynotes_correction_page_output_tl
+                \l__xdyynotes_correction_line_output_tl
               }
           }
           {
@@ -1264,6 +1295,7 @@
                 \l__xdyynotes_correction_book_output_tl
                 \l__xdyynotes_correction_year_output_tl
                 \l__xdyynotes_correction_page_output_tl
+                \l__xdyynotes_correction_line_output_tl
               }
           }
       }
@@ -1332,6 +1364,8 @@
       \__xdyynotes_correction_year_output_set:
       % 处理page
       \__xdyynotes_correction_page_output_set:
+      % 处理line
+      \__xdyynotes_correction_line_output_set:
       % 处理original
       \__xdyynotes_correction_original_output_set:
       % 处理revision
