@@ -30,43 +30,6 @@
 % 加载tcolorbox的库
 \tcbuselibrary{hooks}
 
-% 解决tcolorbox的parbox问题
-% https://github.com/T-F-S/tcolorbox/issues/171#issuecomment-1047908828
-\def\tcb@parbox@false@settings
-  {%
-    \AddToHookNext{para/begin}{\OmitIndent}%
-    \linewidth\hsize%
-    \@totalleftmargin\z@%
-    \leftskip\z@skip%
-    \rightskip\z@skip%
-    \@rightskip\z@skip%
-  }
-
-\def\endtcb@lrbox{\endminipage\ClearHookNext{para/begin}}
-
-\let\tcb@savebox=\tcb@lrbox
-\let\endtcb@savebox=\endtcb@lrbox
-
-% not needed for the MWE but for completeness
-\long\def\tcbox@inner@hbox#1
-  {%
-    \tcb@set@@phantom%
-    \colorlet{tcbcol@origin}{.}%
-    \tcb@set@color{tcbcolupper}%
-    \sbox\tcb@upperbox{\tcb@embed@tcbox{%
-      \csname tcb@parbox@use@\kvtcb@parbox\endcsname%
-      \@parboxrestore%
-      \tcb@lua@color{tcbcolupper}\kvtcb@fontupper\kvtcb@halignupper\tcb@insert@before@upper#1\tcb@insert@after@upper%
-      \ClearHookNext{para/begin}%
-      }}%
-    \tcb@reset@color%
-    \tcbdimto\tcb@val@raisebase{\the\dimexpr\dp\tcb@upperbox+\kvtcb@bottom+\kvtcb@boxsep+\kvtcb@bottom@rule@stand+\kvtcb@bbbottom@stand\relax}%
-    \tcbdimto\kvtcb@width{\wd\tcb@upperbox+\kvtcb@left@rule+\kvtcb@leftupper+\kvtcb@boxsep*2+\kvtcb@rightupper+\kvtcb@right@rule}%
-    \tcb@hasLowerfalse%
-    \tcb@set@@title%
-    \tcb@set@@dimensions%
-    \tcb@draw@color@box%
-  }
 
 % 定义定理环境
 
@@ -147,7 +110,7 @@
     left = 2mm,
     bottom = 6mm,
     right = 2mm,
-    before~skip = 2mm
+    before~skip = 10pt
   }
 \ExplSyntaxOff
 
@@ -445,35 +408,42 @@
 
 
 
+% 重定义命令
 
-% \NewDocumentCommand{\set}{+m +m}{
-%     \left\{ \,\, #1 :  #2 \,\right\} 
-% }
+% 强调 emph
+\keys_define:nn { xdyy-math / emph }
+  {
+    color .tl_set:N = \l__xdyymath_emph_math_color_tl,
+  }
+\RenewDocumentCommand { \emph } { O{} m }
+  {
+    \group_begin:
+      \if_mode_math:
+        \tl_set:Nn \l__xdyymath_emph_math_color_tl
+          { red!80 }
+      \else:
+        \tl_set:Nn \l__xdyymath_emph_math_color_tl
+          { black }
+      \fi:
+      \keys_set:nn { xdyy-math / emph } {#1}
+      \color{ \l__xdyymath_emph_math_color_tl }
+      \if_mode_math:
+        #2
+      \else:
+        \itshape #2
+      \fi:
+    \group_end:
+  }
 
-% \tl_new:N \l__emph_color_tl
-% \keys_define:nn {emph}{
-%     color . tl_set:N = \l__emph_color_tl,
-%     color . initial:n = red!90 ,
-%     color . default:n = red!90 ,
-% }
-% % \renewcommand{\emph}[1]{
-% %   \if_mode_math: \textcolor{red}{\mathbf{#1}}
-% %   \else:
-% %   \textbf{\textcolor{red}{#1}}
-% %   \fi
-% % }
 
-% \NewDocumentCommand{\emphasize}{O{} +m}{
-%     \group_begin:
-%     \keys_set:nn {emph} {#1}
-%     % \if_mode_math: \textcolor{\tl_use:N\l__emph_color_tl}{\mathbf{#2}}
-%     \if_mode_math: \textcolor{\tl_use:N\l__emph_color_tl}{#2}
-%     \else:
-%     \textbf{\textcolor{\tl_use:N\l__emph_color_tl}{#2}}
-%     \fi
-%     % \keys_set:nn {emph} {color}
-%     \group_end:
-% }
+
+% 简化命令
+
+% 集合 set
+\NewDocumentCommand { \set } { +m +m }
+  {
+    \left\{ \,\, #1 :  #2 \, \right\} 
+  }
 
 % \newcommand{\st}{
 %   \if_mode_math: \text{\,\,s.t.\,\,}

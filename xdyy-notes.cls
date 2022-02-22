@@ -94,6 +94,62 @@
 \RequirePackage { thmtools }
 \RequirePackage [ most ] { tcolorbox }
 
+% 解决tcolorbox的parbox问题
+% https://github.com/T-F-S/tcolorbox/issues/171#issuecomment-1047908828
+\def\tcb@parbox@false@settings
+  {%
+    \AddToHookNext{para/begin}{\OmitIndent}%
+    \linewidth\hsize%
+    \@totalleftmargin\z@%
+    \leftskip\z@skip%
+    \rightskip\z@skip%
+    \@rightskip\z@skip%
+  }
+
+\def\endtcb@lrbox{\endminipage\ClearHookNext{para/begin}}
+
+\let\tcb@savebox=\tcb@lrbox
+\let\endtcb@savebox=\endtcb@lrbox
+
+% not needed for the MWE but for completeness
+\long\def\tcbox@inner@hbox#1
+  {%
+    \tcb@set@@phantom%
+    \colorlet{tcbcol@origin}{.}%
+    \tcb@set@color{tcbcolupper}%
+    \sbox\tcb@upperbox{\tcb@embed@tcbox{%
+      \csname tcb@parbox@use@\kvtcb@parbox\endcsname%
+      \@parboxrestore%
+      \tcb@lua@color{tcbcolupper}\kvtcb@fontupper\kvtcb@halignupper\tcb@insert@before@upper#1\tcb@insert@after@upper%
+      \ClearHookNext{para/begin}%
+      }}%
+    \tcb@reset@color%
+    \tcbdimto\tcb@val@raisebase{\the\dimexpr\dp\tcb@upperbox+\kvtcb@bottom+\kvtcb@boxsep+\kvtcb@bottom@rule@stand+\kvtcb@bbbottom@stand\relax}%
+    \tcbdimto\kvtcb@width{\wd\tcb@upperbox+\kvtcb@left@rule+\kvtcb@leftupper+\kvtcb@boxsep*2+\kvtcb@rightupper+\kvtcb@right@rule}%
+    \tcb@hasLowerfalse%
+    \tcb@set@@title%
+    \tcb@set@@dimensions%
+    \tcb@draw@color@box%
+  }
+  
+%% for breakable
+
+\let\tcb@parboxrestore@true=\tcb@parboxrestore
+\let\tcb@parboxrestore@false\tcb@parbox@false@settings
+
+\def\endtcb@vbox{%
+  \par%
+  \unskip%
+  \ifvoid\@mpfootins\else%
+    \vskip\skip\@mpfootins%
+    \normalcolor%
+    \footnoterule%
+    \unvbox\@mpfootins%
+  \fi%
+  \@minipagefalse%
+  \ClearHookNext{para/begin}%
+  \color@endgroup}
+
 % 处理参考文献
 \PassOptionsToPackage 
   {

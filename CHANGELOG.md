@@ -3,6 +3,9 @@
 ### Added
 - 增加`detail`和`correction`的`line`键值
 
+### Fixed
+- 解决`tcolorbox`的`parbox`问题
+
 
 ## [v0.0.2] - 2022-2-20
 ### Added
