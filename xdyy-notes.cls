@@ -7,7 +7,7 @@
 \NeedsTeXFormat{LaTeX2e}[2017/04/15]
 \RequirePackage{expl3}
 \RequirePackage{xparse}
-\ProvidesExplClass {xdyy-notes} {2022-02-23} {v0.0.3} 
+\ProvidesExplClass {xdyy-notes} {2022-02-24} {v0.0.4} 
   {A LaTeX class for taking math notes.}
 
 % 检查 LaTeX2e kernel 版本
@@ -92,6 +92,7 @@
 \RequirePackage { biblatex }
 \RequirePackage { amsthm }
 \RequirePackage { thmtools }
+\RequirePackage { fontawesome5 }
 \RequirePackage [ most ] { tcolorbox }
 
 % 解决tcolorbox的parbox问题
@@ -1483,3 +1484,41 @@
   {
     % \addvspace{ .5em plus .5em minus .2em }
   }
+
+
+% timelog环境 日志式记录
+\keys_define:nn { xdyy-notes / timelog }
+  {
+    date .tl_set:N = \l__xdyynotes_timelog_date_input_tl
+  }
+
+\tl_new:N \l__xdyynotes_timelog_date_output_tl
+
+\cs_new:Npn \__xdyynotes_timelog_date_set:
+  {
+    \tl_set:Nn \l__xdyynotes_timelog_date_output_tl
+      {
+        \raisebox
+          {
+            -0.4pt
+          }
+          { \faClock[regular] }
+        \hspace*{ 0.5em }
+        \l__xdyynotes_timelog_date_input_tl
+      }
+  }
+\NewDocumentEnvironment { timelog } { O{} +b }
+  {
+    \group_begin:
+      \keys_set:nn { xdyy-notes / timelog } {#1}
+      % 设置时间
+      \__xdyynotes_timelog_date_set:
+      % 输出
+      \begin{tcolorbox}
+        [ title = \l__xdyynotes_timelog_date_output_tl ]
+        \itshape
+        #2
+      \end{tcolorbox}
+    \group_end:
+  }
+  {}

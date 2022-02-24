@@ -1,5 +1,11 @@
 # 更新日志
+## [v0.0.4] - 2022-2-24
+
+### Added
+- 增加`timelog`环境
+
 ## [v0.0.3] - 2022-2-23
+
 ### Added
 - 增加`detail`和`correction`的`line`键值
 
