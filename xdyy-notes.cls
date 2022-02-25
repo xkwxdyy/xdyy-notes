@@ -76,6 +76,24 @@
       { ctex~ v2.4.9~ 2017-04-01 }
   }
 
+% 解决 \AtEndPreamble 与 hyperref 与 biblatex 的冲突
+% https://github.com/plk/biblatex/issues/1029
+\ctex_at_end_preamble:n
+  {
+    \RequirePackage { hyperref }
+    \hypersetup
+      {
+        bookmarksnumbered = true,
+        psdextra          = true,
+        unicode           = true,
+        pdftitle    = \l__xdyynotes_info_title_tl,
+        pdfauthor   = \l__xdyynotes_info_author_tl,
+        colorlinks = true,
+      }
+    \exp_args:NV \hypersetup \g__xdyynotes_to_hyperref_clist
+    \xdyynotes_allow_url_break:
+  }
+
 % 建议在模板开始处载入全部宏包，不要轻易改变加载顺序。
 \RequirePackage { etoolbox }
 \RequirePackage { geometry }
@@ -293,23 +311,6 @@
       },
     hyperlink-color .value_required:n = true,
     hyperlink-color .initial:n = prl,
-  }
-
-
-\ctex_at_end_preamble:n
-  {
-    \RequirePackage { hyperref }
-    \hypersetup
-      {
-        bookmarksnumbered = true,
-        psdextra          = true,
-        unicode           = true,
-        pdftitle    = \l__xdyynotes_info_title_tl,
-        pdfauthor   = \l__xdyynotes_info_author_tl,
-        colorlinks = true,
-      }
-    \exp_args:NV \hypersetup \g__xdyynotes_to_hyperref_clist
-    \xdyynotes_allow_url_break:
   }
 
 
