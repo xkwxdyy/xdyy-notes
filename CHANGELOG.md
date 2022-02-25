@@ -4,6 +4,10 @@
 ### Added
 - 增加`timelog`环境
 
+### Fixed
+
+- 解决`xdyy-notes.cls`和`xdyy-math.sty`的冲突
+
 ## [v0.0.3] - 2022-2-23
 
 ### Added
