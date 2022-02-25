@@ -103,8 +103,9 @@
 \RequirePackage { fancyhdr }
 \RequirePackage { lastpage }
 \RequirePackage { amsmath }
+\RequirePackage { extarrows }
 \RequirePackage { enumitem }
-\RequirePackage [dvipsnames, svgnames]{ xcolor }
+\RequirePackage [ dvipsnames, svgnames ]{ xcolor }
 \RequirePackage { needspace }
 \RequirePackage { varwidth }
 \RequirePackage [backend = biber, style = gb7714-2015] { biblatex }
@@ -566,8 +567,8 @@
     \NewDocumentCommand \bm { m } { { \symbfit { ##1 } } }
     \RenewDocumentCommand \boldsymbol { m } { { \symbfit { ##1 } } }
     % 兼容 \pkg{amsfonts} 和 \pkg{amssymb} 中的一些命令。
-    \NewDocumentCommand \square { } { \mdlgwhtsquare }
-    \NewDocumentCommand \blacksquare { } { \mdlgblksquare }
+    % \NewDocumentCommand \square { } { \mdlgwhtsquare }
+    % \NewDocumentCommand \blacksquare { } { \mdlgblksquare }
     \AtBeginDocument
       { \RenewDocumentCommand \checkmark { } { \ensuremath{ ✓ } } }
   }
@@ -1476,8 +1477,8 @@
     \framebox
       {
         $
-          \xLongrightarrow 
-            { \text{ \normalsize 必要性 } }
+          \xLongrightarrow
+            { \text { \normalsize 必要性 } }
         $ 
       }
     \par \addvspace{ .5em plus .5em minus .2em }
