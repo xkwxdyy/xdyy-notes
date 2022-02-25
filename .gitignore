@@ -2,6 +2,7 @@ xdyy-usermanual.cls
 *-usermanual.pdf
 *-test.pdf
 *-example.pdf
+*-notes.pdf
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
