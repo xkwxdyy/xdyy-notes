@@ -34,7 +34,7 @@
     info .meta:nn = { xdyy-notes / info } {#1},
     signature .meta:nn = { xdyy-notes / signature } {#1},
     hyperref .meta:nn = { xdyy-notes / hyperref }{#1},
-    style .meta:nn = { xdyy-notes / style }{#1},
+    bib .meta:nn = { xdyy-notes / bib }{#1},
     quotation .meta:nn = { xdyy-notes / quotation }{#1},
     detail .meta:nn = { xdyy-notes / detail }{#1},
     exercise .meta:nn = { xdyy-notes / exercise }{#1},
@@ -76,6 +76,24 @@
       { ctex~ v2.4.9~ 2017-04-01 }
   }
 
+% 解决 \AtEndPreamble 与 hyperref 与 biblatex 的冲突
+% https://github.com/plk/biblatex/issues/1029
+\ctex_at_end_preamble:n
+  {
+    \RequirePackage { hyperref }
+    \hypersetup
+      {
+        bookmarksnumbered = true,
+        psdextra          = true,
+        unicode           = true,
+        pdftitle    = \l__xdyynotes_info_title_tl,
+        pdfauthor   = \l__xdyynotes_info_author_tl,
+        colorlinks = true,
+      }
+    \exp_args:NV \hypersetup \g__xdyynotes_to_hyperref_clist
+    \xdyynotes_allow_url_break:
+  }
+
 % 建议在模板开始处载入全部宏包，不要轻易改变加载顺序。
 \RequirePackage { etoolbox }
 \RequirePackage { geometry }
@@ -89,7 +107,7 @@
 \RequirePackage [dvipsnames, svgnames]{ xcolor }
 \RequirePackage { needspace }
 \RequirePackage { varwidth }
-\RequirePackage { biblatex }
+\RequirePackage [backend = biber, style = gb7714-2015] { biblatex }
 \RequirePackage { amsthm }
 \RequirePackage { thmtools }
 \RequirePackage { fontawesome5 }
@@ -152,25 +170,44 @@
   \color@endgroup}
 
 % 处理参考文献
-\PassOptionsToPackage 
-  {
-    backend = biber, 
-    natbib,
-    style = gb7714-2015
-  }
-  { biblatex }
 
-\tl_new:N \l__xdyynotes_bib_resource_tl
+\clist_new:N \l__xdyynotes_bib_resource_clist
+\bool_new:N \l__xdyynotes_bib_bibintoc_bool
+\tl_new:N \l__xdyynotes_bib_title_tl
 
-\keys_define:nn { xdyy-notes / style }
+\keys_define:nn { xdyy-notes / bib }
   {
-    bib-resource .tl_set:N = \l__xdyynotes_bib_resource_tl,
+    resource  .clist_set:N  = \l__xdyynotes_bib_resource_clist,
+    bibintoc  .bool_set:N   = \l__xdyynotes_bib_bibintoc_bool,
+    title     .tl_set:N     = \l__xdyynotes_bib_title_tl,
+    bibintoc  .initial:n    = true,
+    title     .initial:n    = { Bibliography },
     % bib-resource .initial:n = {xdyy-notes-template.bib}
   }
 
-\AtEndPreamble
-  {
-    \exp_args:NV \addbibresource \l__xdyynotes_bib_resource_tl
+\ctex_at_end_preamble:n
+  {  
+    \PassOptionsToPackage 
+      {
+        backend = biber, 
+        natbib,
+        style = authoryear
+      }
+      { biblatex }
+    \exp_args:NV \addbibresource \l__xdyynotes_bib_resource_clist
+    \bool_if:NT \l__xdyynotes_bib_bibintoc_bool
+      {
+        \cs_set_eq:NN \__xdyy_printbibliography_old \printbibliography
+
+        \cs_new:Npn \__xdyynotes_printbibliography:n #1 
+          {
+            \__xdyy_printbibliography_old[ #1 ] 
+          }
+        \RenewDocumentCommand { \printbibliography } { O{} } 
+          {
+            \__xdyynotes_printbibliography:n { heading = bibintoc, title = { \tl_use:N \l__xdyynotes_bib_title_tl }, #1 }
+          }
+      }
   }
 
 % 由于 mathtools 需要在 unicode-math 前载入，所以推迟载入 unicode-math
@@ -293,23 +330,6 @@
       },
     hyperlink-color .value_required:n = true,
     hyperlink-color .initial:n = prl,
-  }
-
-
-\ctex_at_end_preamble:n
-  {
-    \RequirePackage { hyperref }
-    \hypersetup
-      {
-        bookmarksnumbered = true,
-        psdextra          = true,
-        unicode           = true,
-        pdftitle    = \l__xdyynotes_info_title_tl,
-        pdfauthor   = \l__xdyynotes_info_author_tl,
-        colorlinks = true,
-      }
-    \exp_args:NV \hypersetup \g__xdyynotes_to_hyperref_clist
-    \xdyynotes_allow_url_break:
   }
 
 
