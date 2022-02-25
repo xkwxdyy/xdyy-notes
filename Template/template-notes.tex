@@ -1,0 +1,52 @@
+\documentclass{../xdyy-notes}
+
+\xdyynotesetup{
+  % 笔记信息
+  info = {
+    author = {夏康玮},
+    title = {算子理论读书笔记},
+    date = {2022年2月26日}
+  },
+  % 前言的落款签名
+  signature = {
+    name = {夏康玮},
+    place = {珞珈山},
+    date = {2022年2月26日}
+  },
+  bib = {
+    % bib文件名
+    resource = {template-notes.bib},
+    % bibintoc = false,
+    title = {参考文献}
+  }
+}
+
+\usepackage{../../xdyy-math-repository/xdyy-math}
+
+\begin{document}
+
+% 标题页
+\maketitle
+
+% 前言、目录部分
+\frontmatter
+
+% 前言
+\begin{preface}
+  test
+\end{preface}
+
+% 目录
+\tableofcontents
+
+% 正文部分
+\mainmatter
+\include{./body/chapter1.tex}
+
+% 后文部分：参考文献、附录等
+\backmatter
+\printbibliography
+
+\include{./appendix/changelog.tex}
+
+\end{document}
