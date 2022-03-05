@@ -7,7 +7,7 @@
 \NeedsTeXFormat{LaTeX2e}[2017/04/15]
 \RequirePackage{expl3}
 \RequirePackage{xparse}
-\ProvidesExplClass {xdyy-notes} {2022-02-24} {v0.0.4} 
+\ProvidesExplClass {xdyy-notes} {2022-03-05} {v0.0.5} 
   {A LaTeX class for taking math notes.}
 
 % 检查 LaTeX2e kernel 版本
@@ -39,6 +39,7 @@
     detail .meta:nn = { xdyy-notes / detail }{#1},
     exercise .meta:nn = { xdyy-notes / exercise }{#1},
     correction .meta:nn = { xdyy-notes / correction }{#1},
+    answer .meta:nn = { xdyy-notes / answer }{#1},
   }
 
 
@@ -1157,18 +1158,23 @@
     bottom-sep .skip_set:N = \l__xdyynotes_exercise_bottom_sep_skip,
     bottom-sep .initial:n = .5em plus .5em minus .2em,
     index .int_gset:N = \g__xdyynotes_exercise_index_int,
+    title .tl_set:N = \l__xdyynotes_exercise_title_input_tl
   }
 
 
 \NewDocumentEnvironment { exercise } { +O { } +b }
-  { \__xdyynotes_exercise_begin:nn {#1}{#2} }
-  { \__xdyynotes_exercise_end:nn {#1}{#2} }
+  { \group_begin: \__xdyynotes_exercise_begin:nn {#1}{#2} }
+  { \__xdyynotes_exercise_end:nn {#1}{#2} \group_end: }
+
+
+\tl_new:N \l__xdyynotes_exercise_title_output_tl
 
 \cs_new:Npn \__xdyynotes_exercise_begin:nn #1#2
   {
     \par
     \int_gincr:N \g__xdyynotes_exercise_index_int
     \keys_set:nn { xdyy-notes / exercise } { #1 }
+    \__xdyynotes_exercise_title_set:
     \addvspace { \l__xdyynotes_exercise_top_sep_skip }
     % 严格禁止孤行和寡行
     \int_set:Nn \clubpenalty { 10000 }
@@ -1188,10 +1194,19 @@
         \dim_set:Nn \labelwidth { 1.3em }
         \dim_set_eq:NN \listparindent \itemindent
       }
-    \item \relax
+    \item \relax \l__xdyynotes_exercise_title_output_tl
   }
 
-
+\cs_new:Nn \__xdyynotes_exercise_title_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_exercise_title_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_exercise_title_output_tl
+          {
+            （\l__xdyynotes_exercise_title_input_tl）
+          }
+      }
+  }
 \cs_new:Npn \__xdyynotes_exercise_end:nn #1#2
   {
       #2
@@ -1215,6 +1230,78 @@
   }
   \__xdyynotes_exercise_index_zero_set:n
 
+
+% 解答环境 answer
+
+\keys_define:nn { xdyy-notes / answer }
+  {
+    showanswer .bool_set:N = \l__xdyynotes_answer_show_bool,
+    title .tl_set:N = \l__xdyynotes_answer_title_input_tl,
+  }
+
+\keys_set:nn { xdyy-notes / answer }
+  {
+    showanswer = true
+  }
+
+\declaretheoremstyle
+  [
+    spaceabove = 6pt,
+    spacebelow = 6pt,
+    headfont = \bfseries\sffamily,
+    notefont = \mdseries, 
+    notebraces = {(}{)},
+    bodyfont = \ttfamily,
+    % bodyfont = \itshape,
+    headpunct = {},
+    % postheadspace = 1em,
+  ]
+  { Answer }
+
+\declaretheorem
+  [
+    style = Answer,
+    name    = 解答,
+    refname = 解答,
+    numbered = no
+  ]{Answer}
+
+
+\tl_new:N \l__xdyynotes_answer_title_output_tl
+
+\NewDocumentEnvironment { answer } { O{} +b }
+  {
+    % 严格禁止孤行和寡行
+    \int_set:Nn \clubpenalty { 10000 }
+    \int_set:Nn \widowpenalty { 10000 }
+    % 尽量避免在中间换行
+    \int_set:Nn \interlinepenalty { 301 }
+    \group_begin:
+      \keys_set:nn { xdyy-notes / answer } {#1}
+      % 设置title
+      \__xdyynotes_answer_title_set:
+      % 根据bool值来决定是否显示解答
+      \bool_if:NTF \l__xdyynotes_answer_show_bool
+        {
+          \begin{Answer}\l__xdyynotes_answer_title_output_tl
+            #2
+          \end{Answer}
+        }
+        {}
+    \group_end:
+  }
+  {}
+
+\cs_new:Nn \__xdyynotes_answer_title_set:
+  {
+    \tl_if_blank:VF \l__xdyynotes_answer_title_input_tl
+      {
+        \tl_set:Nn \l__xdyynotes_answer_title_output_tl
+          {
+            （\l__xdyynotes_answer_title_input_tl）
+          }
+      }
+  }
 
 % 勘误环境 correction
 

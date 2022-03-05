@@ -5,14 +5,14 @@
     author            = {夏康玮},
     title             = { \cls{xdyy-notes} 文类},
     email             = {kangweixia_xdyy@163.com},
-    date              = {2022-02-24},
-    version           = {0.0.4},
+    date              = {2022-03-05},
+    version           = {0.0.5},
     github-repository = {https://github.com/xkwxdyy/xdyy-notes},
     gitee-repository  = {https://gitee.com/xkwxdyy/xdyy-notes},
   }
 }
 
-\usepackage{xchoices}
+\usepackage{../xchoices/xchoices}
 \usepackage{extarrows}
 
 \begin{document}
@@ -222,7 +222,7 @@
 如果老师上课布置了习题或是习题课上的内容，可以使用 \env{exercise} 环境，但是要注意，为了更好地实现模块化效果，一个 \env{exercise} 环境是一道题，该环境主要参考 zepinglee 的 \cls{exam-zh} 项目 \footnote{ \url{https://gitee.com/zepinglee/exam-zh}}。
 
 \begin{vexample}
-    \begin{exercise}
+    \begin{exercise}[title = {title测试}]
       这是一个练习
     \end{exercise}
 
@@ -232,6 +232,24 @@
 \end{vexample}
 
 
+
+\subsubsection{ 解答环境 \env{answer} }
+
+思考了一下，\env{proof} 环境不太贴切用作习题的解答，因为有的时候可以需要将习题解答隐藏起来，但是正文的 \env{proof} 环境一般不需要隐藏，所以再写一个可以控制答案隐藏与否的 \env{answer} 环境
+
+\begin{vexample}
+    \begin{exercise}
+      这是一个练习
+    \end{exercise}
+
+    \begin{answer}
+      这是一个解答
+    \end{answer}
+
+    \begin{answer}[title = {解答title}]
+      这是另一个解答
+    \end{answer}
+\end{vexample}
 
 
 \subsubsection{ 充分性、必要性环境 \env{sufficiency} \env{necessity}}
