@@ -1624,17 +1624,17 @@
   }
 
 
-% timelog环境 日志式记录
-\keys_define:nn { xdyy-notes / timelog }
+% changelog环境 日志式记录
+\keys_define:nn { xdyy-notes / changelog }
   {
-    date .tl_set:N = \l__xdyynotes_timelog_date_input_tl
+    date .tl_set:N = \l__xdyynotes_changelog_date_input_tl
   }
 
-\tl_new:N \l__xdyynotes_timelog_date_output_tl
+\tl_new:N \l__xdyynotes_changelog_date_output_tl
 
-\cs_new:Npn \__xdyynotes_timelog_date_set:
+\cs_new:Npn \__xdyynotes_changelog_date_set:
   {
-    \tl_set:Nn \l__xdyynotes_timelog_date_output_tl
+    \tl_set:Nn \l__xdyynotes_changelog_date_output_tl
       {
         \raisebox
           {
@@ -1642,18 +1642,18 @@
           }
           { \faClock[regular] }
         \hspace*{ 0.5em }
-        \l__xdyynotes_timelog_date_input_tl
+        \l__xdyynotes_changelog_date_input_tl
       }
   }
-\NewDocumentEnvironment { timelog } { O{} +b }
+\NewDocumentEnvironment { changelog } { O{} +b }
   {
     \group_begin:
-      \keys_set:nn { xdyy-notes / timelog } {#1}
+      \keys_set:nn { xdyy-notes / changelog } {#1}
       % 设置时间
-      \__xdyynotes_timelog_date_set:
+      \__xdyynotes_changelog_date_set:
       % 输出
       \begin{tcolorbox}
-        [ title = \l__xdyynotes_timelog_date_output_tl ]
+        [ title = \l__xdyynotes_changelog_date_output_tl, parbox = false ]
         \itshape
         #2
       \end{tcolorbox}

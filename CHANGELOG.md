@@ -10,7 +10,7 @@
 
 - 给`exercise`环境增加`title`选项
 - 去掉`\backmatter`的页眉的中间部分
-
+- `timelog`环境改名为`changelog`环境
 
 ## [v0.0.4] - 2022-02-24
 
