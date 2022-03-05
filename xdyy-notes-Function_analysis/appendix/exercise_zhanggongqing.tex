@@ -1,10 +1,10 @@
 \chapter{《泛函分析讲义（第二版）上》张恭庆 林源渠 --- 习题参考解答}
 
-% \xdyynotesetup{
-%   answer = {
-%     title = {《泛函分析学习指南》林源渠}
-%   }
-% }
+\xdyynotesetup{
+  answer = {
+    showanswer = false
+  }
+}
 
 \section{度量空间}
 
@@ -29,13 +29,13 @@
 
 
 \begin{exercise}[title = {Newton 法}]
-  设 $f$ 是定义在 $[a, b]$ 上的二次连续可微的实值函数, $\widehat{x} \in(a, b)$ 使得 $f(\widehat{x})=0, f^{\prime}(\widehat{x}) \neq 0$. 求证: 存在 $\widehat{x}$ 的邻域 $U(\widehat{x})$, 使得 $\forall x_{0} \in U(\widehat{x})$, 迭代序列
+  设 $f$ 是定义在 $[a, b]$ 上的二次连续可微的实值函数, $\hat{x} \in(a, b)$ 使得 $f(\hat{x})=0, f^{\prime}(\hat{x}) \neq 0$. 求证: 存在 $\hat{x}$ 的邻域 $U(\hat{x})$, 使得 $\forall x_{0} \in U(\hat{x})$, 迭代序列
   \[
-  x_{n+1}=x_{n}-\frac{f\left(x_{n}\right)}{f^{\prime}\left(x_{n}\right)} \quad(n=0,1,2, \cdots)
+    x_{n+1}=x_{n}-\frac{f\left(x_{n}\right)}{f^{\prime}\left(x_{n}\right)} \quad(n=0,1,2, \cdots)
   \]
   是收敛的, 并且
   \[
-  \lim _{n \rightarrow \infty} x_{n}=\widehat{x}
+    \lim _{n \rightarrow \infty} x_{n}=\hat{x}.
   \]
 \end{exercise}
 
@@ -69,4 +69,8 @@
       }
     \]
   故有 $x_{n} \rightarrow \hat{x} (n \rightarrow \infty)$.
+
+  \begin{remark}
+    关键在求导后求极限，进而出现压缩的系数。但还有需要注意的地方，就是要保证压缩的映射除了定义域是一个完备的空间外，要保证值域要落在相同的完备空间，也就是映射 $T$ 必须是 self-map 的，
+  \end{remark}
 \end{answer}
