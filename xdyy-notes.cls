@@ -622,10 +622,36 @@
       }
   }
 
+% 定义backmatter的页眉页脚
+\fancypagestyle { backmatterplain }
+  {
+    \fancyhf { }
+    \fancyhead [ L ] 
+      {
+        \kaishu
+        \leftmark
+      }
+    \fancyhead [ R ] 
+      {
+        \kaishu
+        \rightmark
+      }
+    % \fancyhead [ C ]
+    %   {
+    %     \kaishu \bfseries
+    %     \tl_use:N \l__xdyynotes_info_title_tl
+    %   }
+    \fancyfoot [ C ]
+      {
+        \small
+        Page~\thepage / \pageref { LastPage }
+      }
+  }
 
-% 重设\frontmatter和\mainmatter，去掉frontmatter的页脚
+% 重设\frontmatter、\mainmatter、\backmatter，去掉frontmatter的页脚，修改 \backmatter 的页眉
 \cs_set_eq:NN \__xdyynotes_frontmatter: \frontmatter
 \cs_set_eq:NN \__xdyynotes_mainmatter: \mainmatter
+\cs_set_eq:NN \__xdyynotes_backmatter: \backmatter
 \cs_set:Npn \frontmatter
   {
     \group_begin:
@@ -640,7 +666,11 @@
     \group_end:
     \__xdyynotes_mainmatter:
   }
-
+\cs_set:Npn \backmatter
+  {
+    \pagestyle { backmatterplain }
+    \__xdyynotes_backmatter:
+  }
 
 % 设置 enumitem 列表格式
 \setlist{nosep}
