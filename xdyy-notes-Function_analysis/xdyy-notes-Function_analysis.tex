@@ -1,0 +1,63 @@
+\documentclass{../xdyy-notes}
+
+\xdyynotesetup{
+  % 笔记信息
+  info = {
+    author = {夏康玮},
+    title = {泛函分析读书笔记},
+    date = {2022年3月5日}
+  },
+  % 前言的落款签名
+  signature = {
+    name = {夏康玮},
+    place = {珞珈山},
+    date = {2022年3月5日}
+  },
+  bib = {
+    % bib文件名
+    resource = {xdyy-notes-Function_analysis.bib},
+    title = {参考文献}
+  }
+}
+
+\usepackage{../../xdyy-math-repository/xdyy-math}
+
+\begin{document}
+
+% 标题页
+\maketitle
+
+% 前言、目录部分
+\frontmatter
+
+% 前言
+\begin{preface}
+  兜兜转转很久终于开始了笔记的输出，其实泛函分析本不是我现在的学习任务，但是本科学习的时候恰逢疫情期间，老师让我们自己看书学习，完全放养下就变成了摸鱼状态，最后考试临时抱佛脚加上考试没出难题才渡过一关。
+
+  研一上半学期是第二遍学习，用的是许全华老师的《泛函分析讲义》。书本身不错，但是言简意赅的同时也会让我这个半吊子水平的人有时摸不着头脑，再加上研一上的时候自己学习一直不在状态，课后不复习，然后陷入恶性循环，最后还是啥也没学到。
+
+  这学期恰逢江宁老师讲弘毅班的泛函分析课程，之前就对江老师的厉害有所耳闻，于是打算旁听，终于解决掉讨论班和泛函的时间冲突后终于可以安心上课和学习，前三周也过去了，不能再像以前一样陷入恶性循环，基本的笔记宏包和文类也写的差不多了，已经没有再拖延的借口。
+
+  自己也需要借此机会来探寻和稳固适合自己的学习方法，输入内化输出，如何才能让学习最高效。
+
+  不管怎么样，先往下做吧。完成往往比完美好。
+
+  铭记：\emph{你不需要很厉害才能开始，但你只有开始才能很厉害}，共勉。
+\end{preface}
+
+% 目录
+\tableofcontents
+
+% 正文部分
+\mainmatter
+\include{./body/chapter1.tex}
+
+% 后文部分：参考文献、附录等
+\backmatter
+\include{./appendix/exercise_zhanggongqing.tex}
+
+% \printbibliography
+
+\include{./appendix/changelog.tex}
+
+\end{document}

@@ -1,0 +1,72 @@
+\chapter{《泛函分析讲义（第二版）上》张恭庆 林源渠 --- 习题参考解答}
+
+% \xdyynotesetup{
+%   answer = {
+%     title = {《泛函分析学习指南》林源渠}
+%   }
+% }
+
+\section{度量空间}
+
+
+\subsection{压缩映射原理}
+
+\begin{exercise}
+  证明：完备空间的闭子集是一个完备的子空间，而任一度量空间中的完备子空间必是闭子集．
+\end{exercise}
+
+\begin{answer}
+  \begin{analysis}
+    证明没什么太大的难度，核心就是度量空间中闭集的序列刻画和完备的定义
+  \end{analysis}
+  \begin{step}
+    \item 先证明前半结论。
+      任取闭子集的一个基本列，那么它也是大空间的基本列而大空间完备，那么就收敛，极限点由子集闭知也在子集内，那么这个子集就是完备的
+    \item 再证明后半结论。
+      任取完备子空间的一个收敛序列，那么它也是基本列，而由于完备那么它收敛的极限就在这个子空间内，由闭集的定义（《泛函分析讲义（第二版）上》张恭庆 林源渠 P2 定义1.1.4）知子空间是闭集
+  \end{step}
+\end{answer}
+
+
+\begin{exercise}[title = {Newton 法}]
+  设 $f$ 是定义在 $[a, b]$ 上的二次连续可微的实值函数, $\widehat{x} \in(a, b)$ 使得 $f(\widehat{x})=0, f^{\prime}(\widehat{x}) \neq 0$. 求证: 存在 $\widehat{x}$ 的邻域 $U(\widehat{x})$, 使得 $\forall x_{0} \in U(\widehat{x})$, 迭代序列
+  \[
+  x_{n+1}=x_{n}-\frac{f\left(x_{n}\right)}{f^{\prime}\left(x_{n}\right)} \quad(n=0,1,2, \cdots)
+  \]
+  是收敛的, 并且
+  \[
+  \lim _{n \rightarrow \infty} x_{n}=\widehat{x}
+  \]
+\end{exercise}
+
+\begin{answer}[title = {《泛函分析学习指南》林源渠 P8}]
+  考虑 $Tx \deltaeq x-\frac{f(x)}{f^{\prime}(x)}$, 则有
+    \[
+      \dv{x}(Tx) = 
+        1 - \frac{\left(f^{\prime}(x)\right)^{2} - f(x) f^{\prime \prime}(x)}{\left(f^{\prime}(x)\right)^{2}} 
+        = \frac{f(x) f^{\prime \prime}(x)}{\left(f^{\prime}(x)\right)^{2}} .
+    \]
+  因为 $f(\hat{x}) = 0, f^{\prime}(\hat{x}) \neq 0, f^{\prime \prime}(x)$ 在点 $\hat{x}$ 处连续, 所以 $\lim _{x \rightarrow \hat{x}} \frac{f(x) f^{\prime \prime}(x)}{ \left( f^{\prime}(x) \right) ^{2}} = 0$, 从而 $\exists \hat{x}$ 的邻域 $U(\hat{x})$, 使得
+    \[
+      \begin{gathered}
+        \abs{\frac{f(x) f^{\prime \prime}(x)}{ \left( f^{\prime}(x) \right) ^{2}}} \leqslant \alpha < 1, \quad
+        f^{\prime}(x) \neq 0 \quad(\forall x \in U(\hat{x})), \\
+        \abs{Tx - Ty} = \abs{\frac{f(\xi) f^{\prime \prime}(\xi)}{(f^{\prime}(\xi))^{2}}} {\abs{x - y}} \leqslant \alpha \abs{x - y} \quad (\forall x, y \in U(\hat{x})) .
+      \end{gathered}
+    \]
+  于是, 对 $\forall x_{0} \in U(\hat{x}), x_{n + 1} = T x_{n}(n = 0, 1, 2, \cdots)$ 是收敛的. 设 $x_{n} \rightarrow x \in U(\hat{x}), Tx = x \Longrightarrow f(x) = 0$, 联合
+    \[
+      \deduce[show-leftbrace = true, leftbrace-to-arrow = 1em]{
+        $
+        \begin{aligned}
+          f(\hat{x})     =   0, \quad & \hat{x} \in U(\hat{x}), \\ 
+          f(x)           =   0, \quad & x \in U(\hat{x}), \\ 
+          f^{\prime}(x) \neq 0, \quad & \forall x \in U(\hat{x})
+        \end{aligned}
+        $
+      }{
+        $x = \hat{x}$
+      }
+    \]
+  故有 $x_{n} \rightarrow \hat{x} (n \rightarrow \infty)$.
+\end{answer}
