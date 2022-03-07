@@ -7,7 +7,7 @@
 \NeedsTeXFormat{LaTeX2e}[2017/04/15]
 \RequirePackage{expl3}
 \RequirePackage{xparse}
-\ProvidesExplClass {xdyy-notes} {2022-03-05} {v0.0.5} 
+\ProvidesExplClass {xdyy-notes} {2022-03-07} {v0.0.6} 
   {A LaTeX class for taking math notes.}
 
 % 检查 LaTeX2e kernel 版本
@@ -1579,43 +1579,6 @@
     \group_end:
   }
 
-
-% 定义充分必要性环境
-% 必要性
-\NewDocumentEnvironment { necessity } { +b }
-  {
-    \par \noindent
-    \framebox
-      {
-        $
-          \xLongrightarrow
-            { \text { \normalsize 必要性 } }
-        $ 
-      }
-    \par \addvspace{ .5em plus .5em minus .2em }
-    \par #1
-    \par \addvspace{ .5em plus .5em minus .2em }
-  }
-  {}
-
-% 充分性
-\NewDocumentEnvironment { sufficiency } { +b }
-  {
-    \par \noindent 
-    \framebox
-      {
-        $
-          \xLongleftarrow 
-            { \text{ \normalsize 充分性 } }
-        $ 
-      }
-    \par \addvspace{ .5em plus .5em minus .2em }
-    \par #1
-    \par \addvspace{ .5em plus .5em minus .2em }
-  }
-  {
-    % \addvspace{ .5em plus .5em minus .2em }
-  }
 
 
 % changelog环境 日志式记录
